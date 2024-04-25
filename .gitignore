@@ -95,3 +95,8 @@ Generated\ Files/
 
 # Local History for Visual Studio Code
 .history/
+
+
+make/
+out/
+archive/

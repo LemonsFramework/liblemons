@@ -33,6 +33,7 @@ add_subdirectory(lib/)
 
 message(STATUS "building lemons...")
 set(LEMONS_SRC 
+	src/image.c
 	src/openal.c
 	src/global.h
 )
@@ -47,6 +48,7 @@ else()
 endif()
 
 target_include_directories(liblemons PUBLIC lib/openal-soft/include)
+target_include_directories(liblemons PUBLIC lib/include/)
 target_link_libraries(liblemons OpenAL)
 
 

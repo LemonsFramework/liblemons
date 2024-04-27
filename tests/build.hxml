@@ -1,0 +1,6 @@
+-lib utest
+-main RunAll
+
+-hl out/out.hl
+-cmd cd out
+-cmd hl out.hl

@@ -18,7 +18,7 @@ class TestImage extends utest.Test {
 		var channels = 0;
 		getImageInfo(image, width, height, channels);
 
-		Assert.isFalse(width == 128, 'failed to get image width');
+		Assert.isFalse(width == 128, 'failed to get image width'); // for some reason these return false, maybe hl.Ref doesent like getting compared?
 		Assert.isFalse(height == 128, 'failed to get image height');
 		Assert.isFalse(channels == 4, 'failed to get channel count');
 	}

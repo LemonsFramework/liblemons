@@ -6,8 +6,9 @@ class RunAll {
   	trace('hai');
     var runner = new Runner();
     runner.addCase(new tests.TestImage());
-    // runner.addCase(new TestCase2());
+    runner.addCase(new tests.TestSound());
     Report.create(runner);
+
     runner.run();
   }
 }

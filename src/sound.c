@@ -5,6 +5,9 @@
 #define DR_FLAC_IMPLEMENTATION
 #include <dr_flac.h>
 
+#define DR_WAV_IMPLEMENTATION
+#include <dr_wav.h>
+
 #define FUNC_NAME(n) HL_NAME(sound_##n)
 
 
@@ -12,30 +15,16 @@ typedef struct _LemonsSound LemonsSound;
 struct _LemonsSound {
 	void (*finalize)(LemonsSound*);
 	void (*seek)(LemonsSound*, int);
-	varray* (*getComments)(LemonsSound*);
 	int (*read)(LemonsSound*, char*, int);
 	int sampleRate;
 	int channels;
 	void* handle;
+	varray* comments;
 };
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // ogg specific functions
-
-static varray* comments_ogg(LemonsSound* sound) {
-	stb_vorbis* vorbius = (stb_vorbis*)sound->handle;
-	stb_vorbis_comment commentStruct = stb_vorbis_get_comment(vorbius);
-
-	varray* array = hl_alloc_array(&hlt_bytes, commentStruct.comment_list_length);
-
-	for (int i = 0; i < commentStruct.comment_list_length; i++) {
-		int size = sizeof(char*) * (strlen(commentStruct.comment_list[i]) + 1);
-		hl_aptr(array, vbyte*)[i] = hl_copy_bytes((vbyte*)commentStruct.comment_list[i], size);
-	}
-
-	return array;
-}
 
 static void seek_ogg(LemonsSound* sound, int sample) {
 	stb_vorbis_seek((stb_vorbis*)sound->handle, sample);
@@ -49,6 +38,7 @@ static int read_ogg(LemonsSound* sound, char* out, int length) {
 static void finalize_ogg(LemonsSound* sound) {
 	stb_vorbis_close((stb_vorbis*)sound->handle);
 	sound->handle = NULL;
+	sound->comments = NULL;
 	sound->channels = 0;
 	sound->sampleRate = 0;
 }
@@ -75,7 +65,17 @@ HL_PRIM LemonsSound* FUNC_NAME(create_from_ogg)(vbyte* data, int length) {
 
 	sound->seek = seek_ogg;
 	sound->read = read_ogg;
-	sound->getComments = comments_ogg;
+
+	stb_vorbis_comment commentStruct = stb_vorbis_get_comment(soundThing);
+
+	varray* array = hl_alloc_array(&hlt_bytes, commentStruct.comment_list_length);
+
+	for (int i = 0; i < commentStruct.comment_list_length; i++) {
+		int size = sizeof(char*) * (strlen(commentStruct.comment_list[i]) + 1);
+		hl_aptr(array, vbyte*)[i] = hl_copy_bytes((vbyte*)commentStruct.comment_list[i], size);
+	}
+
+	sound->comments = array;
 
 	return sound;
 }
@@ -83,11 +83,10 @@ HL_PRIM LemonsSound* FUNC_NAME(create_from_ogg)(vbyte* data, int length) {
 //////////////////////////////////////////////////////////////////////////////////////////
 // flac specific functions
 
-// todo: metadata stuff for getting comments
-
 static void finalize_flac(LemonsSound* sound) {
 	drflac_close((drflac*)sound->handle);
 	sound->handle = NULL;
+	sound->comments = NULL;
 	sound->channels = 0;
 	sound->sampleRate = 0;
 }
@@ -97,17 +96,36 @@ static void seek_flac(LemonsSound* sound, int sample) {
 }
 
 static int read_flac(LemonsSound* sound, char* out, int length) {
-	return drflac_read_pcm_frames_s16((drflac*)sound->handle, length * sound->channels, (short*)out);
+	return (int)drflac_read_pcm_frames_s16((drflac*)sound->handle, length * sound->channels, (short*)out);
 }
 
-static int flac_metadata(void* pUserData, drflac_metadata* pMetadata) {
+static void flac_metadata(void* pUserData, drflac_metadata* meta) {
+	if (meta->type != DRFLAC_METADATA_BLOCK_TYPE_VORBIS_COMMENT) return;
+
+	LemonsSound* sound = (LemonsSound*)pUserData;
+
+	int count = meta->data.vorbis_comment.commentCount;
+
+	varray* array = hl_alloc_array(&hlt_bytes, count);
+
+	drflac_vorbis_comment_iterator iter;
+	drflac_init_vorbis_comment_iterator(&iter, count, meta->data.vorbis_comment.pComments);
+
+	int commentLength;
+    const char* pComment;
+	int curComment = 0;
+
+    while ((pComment = drflac_next_vorbis_comment(&iter, &commentLength)) != NULL)
+		hl_aptr(array, vbyte*)[curComment++] = hl_copy_bytes(pComment, commentLength);
+
+	sound->comments = array;
 }
 
 HL_PRIM LemonsSound* FUNC_NAME(create_from_flac)(vbyte* data, int length) {
 	LemonsSound* sound = (LemonsSound*)hl_gc_alloc_finalizer(sizeof(LemonsSound));
 	sound->finalize = finalize_flac;
 
-	drflac* soundThing = drflac_open_memory_with_metadata(data, length, flac_metadata, NULL, NULL);
+	drflac* soundThing = drflac_open_memory_with_metadata(data, length, flac_metadata, (void*)&*sound, NULL);
 	sound->handle = (void*)&*soundThing;
 
 	sound->sampleRate = soundThing->sampleRate;
@@ -118,6 +136,47 @@ HL_PRIM LemonsSound* FUNC_NAME(create_from_flac)(vbyte* data, int length) {
 
 	return sound;
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// wav/aiff/any format thats based on the iff format for audio specific functions
+
+static void finalize_wav(LemonsSound* sound) {
+	drwav* stupid = sound->handle;
+	drwav_uninit(stupid);
+	sound->handle = NULL;
+	sound->comments = NULL;
+	sound->channels = 0;
+	sound->sampleRate = 0;
+}
+
+static void seek_wav(LemonsSound* sound, int sample) {
+	drwav_seek_to_pcm_frame((drwav*)sound->handle, sample);
+}
+
+static int read_wav(LemonsSound* sound, char* out, int length) {
+	return (int)drwav_read_pcm_frames_s16((drwav*)sound->handle, length * sound->channels, (short*)out);
+}
+
+HL_PRIM LemonsSound* FUNC_NAME(create_from_wav)(vbyte* data, int length) {
+	LemonsSound* sound = (LemonsSound*)hl_gc_alloc_finalizer(sizeof(LemonsSound));
+	sound->finalize = finalize_wav;
+
+	drwav soundThing;
+
+	int error = drwav_init_memory(&soundThing, data, length, 0, NULL);
+	sound->handle = (void*)&soundThing;
+
+	sound->sampleRate = soundThing.sampleRate;
+	sound->channels = soundThing.channels;
+
+	sound->seek = seek_wav;
+	sound->read = read_wav;
+
+	return sound;
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // getter stuff
@@ -137,13 +196,14 @@ HL_PRIM void FUNC_NAME(get_data)(LemonsSound* sound, int* sampleRate, int* chann
 }
 
 HL_PRIM varray* FUNC_NAME(get_comments)(LemonsSound* sound) {
-	return sound->getComments(sound);
+	return sound->comments;
 }
 
 #define _SOUND _ABSTRACT(LemonsSound*)
 
 DEFINE_PRIM(_SOUND, sound_create_from_ogg, _BYTES _I32);
 DEFINE_PRIM(_SOUND, sound_create_from_flac, _BYTES _I32);
+DEFINE_PRIM(_SOUND, sound_create_from_wav, _BYTES _I32);
 DEFINE_PRIM(_VOID, sound_seek, _SOUND _I32);
 DEFINE_PRIM(_I32, sound_read, _SOUND _BYTES _I32);
 DEFINE_PRIM(_VOID, sound_get_data, _SOUND _REF(_I32) _REF(_I32));

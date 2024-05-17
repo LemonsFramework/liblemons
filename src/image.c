@@ -3,6 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#undef EXT_NAME
 #define EXT_NAME "image"
 
 // todo: resizing and writing

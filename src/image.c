@@ -3,8 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#undef EXT_NAME
-#define EXT_NAME "image"
+#define FUNC_NAME(n) HL_NAME(image_##n)
 
 // todo: resizing and writing
 
@@ -57,7 +56,7 @@ HL_PRIM vbyte* FUNC_NAME(get_image_data)(LemonsImage* image) {
 
 #define _IMAGE _ABSTRACT(LemonsImage*)
 
-DEFINE_PRIM(_IMAGE, PRIM_NAME(create_from_bytes), _BYTES _I32);
-DEFINE_PRIM(_IMAGE, PRIM_NAME(create_from_file), _STRING);
-DEFINE_PRIM(_VOID, PRIM_NAME(get_image_info), _IMAGE _REF(_I32) _REF(_I32) _REF(_I32));
-DEFINE_PRIM(_BYTES, PRIM_NAME(get_image_data), _IMAGE);
+DEFINE_PRIM(_IMAGE, image_create_from_bytes, _BYTES _I32);
+DEFINE_PRIM(_IMAGE, image_create_from_file, _STRING);
+DEFINE_PRIM(_VOID, image_get_image_info, _IMAGE _REF(_I32) _REF(_I32) _REF(_I32));
+DEFINE_PRIM(_BYTES, image_get_image_data, _IMAGE);

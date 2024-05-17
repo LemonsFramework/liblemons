@@ -4,8 +4,7 @@
 #include <AL/alc.h>
 #include <AL/efx.h>
 
-#undef EXT_NAME
-#define EXT_NAME "openal"
+#define FUNC_NAME(n) HL_NAME(openal_##n)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // al
@@ -122,7 +121,9 @@ HL_PRIM void FUNC_NAME(alc_get_integerv)(ALCdevice* device, int param, int size,
 // todo: capture apis
 
 
+
+
 #define _ALCCONTEXT _ABSTRACT(ALCcontext*)
 #define _ALCDEVICE _ABSTRACT(ALCdevice*)
 
-DEFINE_PRIM(_ALCCONTEXT, PRIM_NAME(alc_create_context), _ALCDEVICE _BYTES)
+DEFINE_PRIM(_ALCCONTEXT, openal_alc_create_context, _ALCDEVICE _BYTES)

@@ -8,8 +8,8 @@
 #define DR_WAV_IMPLEMENTATION
 #include <dr_wav.h>
 
-#define FUNC_NAME(n) HL_NAME(sound_##n)
-
+#undef EXT_NAME
+#define EXT_NAME "sound"
 
 typedef struct _LemonsSound LemonsSound;
 struct _LemonsSound {
@@ -201,10 +201,10 @@ HL_PRIM varray* FUNC_NAME(get_comments)(LemonsSound* sound) {
 
 #define _SOUND _ABSTRACT(LemonsSound*)
 
-DEFINE_PRIM(_SOUND, sound_create_from_ogg, _BYTES _I32);
-DEFINE_PRIM(_SOUND, sound_create_from_flac, _BYTES _I32);
-DEFINE_PRIM(_SOUND, sound_create_from_wav, _BYTES _I32);
-DEFINE_PRIM(_VOID, sound_seek, _SOUND _I32);
-DEFINE_PRIM(_I32, sound_read, _SOUND _BYTES _I32);
-DEFINE_PRIM(_VOID, sound_get_data, _SOUND _REF(_I32) _REF(_I32));
-DEFINE_PRIM(_ARR, sound_get_comments, _SOUND);
+DEFINE_PRIM(_SOUND, PRIM_NAME(create_from_ogg), _BYTES _I32);
+DEFINE_PRIM(_SOUND, PRIM_NAME(create_from_flac), _BYTES _I32);
+DEFINE_PRIM(_SOUND, PRIM_NAME(create_from_wav), _BYTES _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(seek), _SOUND _I32);
+DEFINE_PRIM(_I32, PRIM_NAME(read), _SOUND _BYTES _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(get_data), _SOUND _REF(_I32) _REF(_I32));
+DEFINE_PRIM(_ARR, PRIM_NAME(get_comments), _SOUND);

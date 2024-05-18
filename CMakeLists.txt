@@ -16,8 +16,6 @@ foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${OUTPUT_DIR})
 endforeach()
 
-add_subdirectory(lib/)
-
 message(STATUS "creating liblemons...")
 set(LEMONS_SRC 
 	src/image.c
@@ -26,8 +24,9 @@ set(LEMONS_SRC
 	src/global.h
 )
 
-add_library(liblemons SHARED ${LEMONS_SRC})
+add_subdirectory(lib/)
 
+add_library(liblemons SHARED ${LEMONS_SRC})
 
 # why the hell is this backwards?????
 if(DEFINED $ENV{HASHLINK}) 
@@ -41,8 +40,6 @@ target_include_directories(liblemons PUBLIC OpenAL)
 target_include_directories(liblemons PUBLIC glfw)
 target_link_libraries(liblemons OpenAL)
 target_link_libraries(liblemons glfw)
-
-target_include_directories(liblemons PUBLIC lib/include/)
 
 set_target_properties(liblemons PROPERTIES LINKER_LANGUAGE C)
 set_target_properties(liblemons PROPERTIES OUTPUT_NAME lemons PREFIX "" SUFFIX .hdll)

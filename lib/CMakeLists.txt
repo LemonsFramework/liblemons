@@ -1,3 +1,5 @@
+target_include_directories(liblemons PUBLIC include/)
+
 message(STATUS "creating openal-soft...")
 set(ALSOFT_UTILS OFF CACHE BOOL "" FORCE)
 set(ALSOFT_EXAMPLES OFF CACHE BOOL "" FORCE)

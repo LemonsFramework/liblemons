@@ -8,19 +8,15 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(OUTPUT_DIR ${CMAKE_SOURCE_DIR}/out)
-set(ARCHIVE_DIR ${CMAKE_SOURCE_DIR}/archive)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${ARCHIVE_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${ARCHIVE_DIR})
 
 # avoid the extra "Debug", "Release" directories
 foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
     string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${OUTPUT_DIR})
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${ARCHIVE_DIR})
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${ARCHIVE_DIR})
 endforeach()
 
+add_subdirectory(lib/)
 
 message(STATUS "creating liblemons...")
 set(LEMONS_SRC 
@@ -32,6 +28,7 @@ set(LEMONS_SRC
 
 add_library(liblemons SHARED ${LEMONS_SRC})
 
+
 # why the hell is this backwards?????
 if(DEFINED $ENV{HASHLINK}) 
 	message(FATAL_ERROR "the \"HASHLINK\" enviroment variable must be defined")
@@ -40,12 +37,12 @@ else()
 	target_link_libraries(liblemons $ENV{HASHLINK}/libhl.lib)
 endif()
 
-add_subdirectory(lib/)
-
 target_include_directories(liblemons PUBLIC OpenAL)
-target_include_directories(liblemons PUBLIC lib/include/)
+target_include_directories(liblemons PUBLIC glfw)
 target_link_libraries(liblemons OpenAL)
+target_link_libraries(liblemons glfw)
 
+target_include_directories(liblemons PUBLIC lib/include/)
 
 set_target_properties(liblemons PROPERTIES LINKER_LANGUAGE C)
 set_target_properties(liblemons PROPERTIES OUTPUT_NAME lemons PREFIX "" SUFFIX .hdll)

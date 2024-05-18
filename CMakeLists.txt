@@ -36,6 +36,8 @@ else()
 	target_link_libraries(liblemons $ENV{HASHLINK}/libhl.lib)
 endif()
 
+target_include_directories(liblemons PUBLIC include/)
+
 target_include_directories(liblemons PUBLIC OpenAL)
 target_include_directories(liblemons PUBLIC glfw)
 target_link_libraries(liblemons OpenAL)

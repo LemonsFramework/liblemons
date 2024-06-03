@@ -1,0 +1,8 @@
+/*
+	Generated with liblemons' GLADGenerator https://github.com/LemonsFramework/liblemons
+*/
+
+package;
+
+@:hlNative('lemons', '::primName::')
+class ::haxeName:: {

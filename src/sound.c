@@ -164,7 +164,7 @@ HL_PRIM LemonsSound* FUNC_NAME(create_from_wav)(vbyte* data, int length) {
 
 	drwav soundThing;
 
-	int error = drwav_init_memory(&soundThing, data, length, 0, NULL);
+	int error = drwav_init_memory(&soundThing, data, length, NULL);
 	sound->handle = (void*)&soundThing;
 
 	sound->sampleRate = soundThing.sampleRate;

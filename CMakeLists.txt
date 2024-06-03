@@ -21,6 +21,7 @@ set(LEMONS_SRC
 	src/image.c
 	src/sound.c
 	src/openal.c
+	src/gl.c
 	src/global.h
 )
 

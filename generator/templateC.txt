@@ -1,0 +1,13 @@
+/*
+	Generated with liblemons' GLADGenerator https://github.com/LemonsFramework/liblemons
+*/
+
+#pragma warning(disable:4098) // disable void return warning
+
+#include "global.h"
+
+#define ::includeFileDefine::
+#include <::includeFile::>
+
+#define FUNC_NAME(n) HL_NAME(::primName::_##n)
+#define PRIM_NAME(n) ::primName::_##n

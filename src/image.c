@@ -8,14 +8,7 @@
 
 // todo: resizing and writing
 
-typedef struct _LemonsImage LemonsImage;
-struct _LemonsImage {
-	void(*finalize)(LemonsImage*);
-	int width;
-	int height;
-	int channels;
-	vbyte* bytes;
-};
+#include "image.h"
 
 static void image_finalize(LemonsImage* image) {
 	image->width = 0;

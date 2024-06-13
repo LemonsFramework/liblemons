@@ -19,9 +19,11 @@ endforeach()
 message(STATUS "creating liblemons...")
 set(LEMONS_SRC 
 	src/image.c
+	src/image.h
 	src/sound.c
 	src/openal.c
 	src/gl.c
+	src/glfw.c
 	src/global.h
 )
 

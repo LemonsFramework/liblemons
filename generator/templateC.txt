@@ -3,11 +3,16 @@
 */
 
 #pragma warning(disable:4098) // disable void return warning
+#pragma warning(disable:4133) // disable uchar* to (const) GLchar* warning
+#pragma warning(disable:4090) // disable const warning thing
 
 #include "global.h"
 
 #define ::includeFileDefine::
 #include <::includeFile::>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #define FUNC_NAME(n) HL_NAME(::primName::_##n)
 #define PRIM_NAME(n) ::primName::_##n

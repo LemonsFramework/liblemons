@@ -269,6 +269,8 @@ class GLADGenetator {
 			prims.add('DEFINE_PRIM(');
 			haxeFile.add('\tpublic static function ');
 
+			commands.add('HL_PRIM ');
+
 			var jaxeReturn:String = '';
 			var typeThing:StringBuf = new StringBuf();
 			for (func in proto.iterator()) {

@@ -24,3 +24,9 @@ static void onDebugData(GLenum source, GLenum type, GLuint id, GLenum severity, 
 	vdynamic* args[6] = { &arg, &argTwo, &argThree, &argFour, &argFive, &argSix };
 	hl_dyn_call(debugFunc, args, 6);
 }
+
+HL_PRIM int FUNC_NAME(glad_load_gl)() {
+	return gladLoadGL(glfwGetProcAddress);
+}
+
+DEFINE_PRIM(_I32, PRIM_NAME(glad_load_gl), _NO_ARG);

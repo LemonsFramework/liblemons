@@ -85,7 +85,7 @@ HL_PRIM void FUNC_NAME(glfw_window_hint)(int hint, int value) {
 
 
 HL_PRIM void FUNC_NAME(glfw_window_hint_string)(int hint, vstring* value) {
-	glfwWindowHintString(hint, (const char*)value->bytes);
+	glfwWindowHintString(hint, (const char*)hl_to_utf8(value->bytes));
 }
 
 
@@ -135,7 +135,7 @@ HL_PRIM void FUNC_NAME(glfw_swap_interval)(int interval) {
 
 
 HL_PRIM int FUNC_NAME(glfw_extension_supported)(vstring* extension) {
-	return glfwExtensionSupported((const char*)extension->bytes);
+	return glfwExtensionSupported((const char*)hl_to_utf8(extension->bytes));
 }
 
 
@@ -203,7 +203,7 @@ DEFINE_PRIM(_BYTES, PRIM_NAME(glfw_get_monitor_name), _MONITOR);
 //////////////////////////////////////////////////////////////////////////////////////////
 
 HL_PRIM GLFWwindow* FUNC_NAME(glfw_create_window)(int width, int height, vstring* title, GLFWmonitor* monitor, GLFWwindow* share) {
-	return glfwCreateWindow(width, height, (const char*)title->bytes, monitor, share);
+	return glfwCreateWindow(width, height, (const char*)hl_to_utf8(title->bytes), monitor, share);
 }
 
 HL_PRIM void FUNC_NAME(glfw_destroy_window)(GLFWwindow* window) {
@@ -223,7 +223,7 @@ HL_PRIM const vbyte* FUNC_NAME(glfw_get_window_title)(GLFWwindow* window) {
 }
 
 HL_PRIM void FUNC_NAME(glfw_set_window_title)(GLFWwindow* window, vstring* title) {
-	glfwSetWindowTitle(window, (const char*)title->bytes);
+	glfwSetWindowTitle(window, (const char*)hl_to_utf8(title->bytes));
 }
 
 /* same with custom cursor code
@@ -337,7 +337,7 @@ HL_PRIM GLFWwindow* FUNC_NAME(glfw_get_current_context)() {
 }
 
 HL_PRIM void FUNC_NAME(glfw_set_clipboard_string)(GLFWwindow* window, vstring* string) {
-	glfwSetClipboardString(window, (const char*)string->bytes);
+	glfwSetClipboardString(window, (const char*)hl_to_utf8(string->bytes));
 }
 
 HL_PRIM const vbyte* FUNC_NAME(glfw_get_clipboard_string)(GLFWwindow* window) {
@@ -526,7 +526,7 @@ HL_PRIM int FUNC_NAME(glfw_joystick_is_gamepad)(int jid) {
 }
 
 HL_PRIM int FUNC_NAME(glfw_update_gamepad_mappings)(vstring* string) {
-	return glfwUpdateGamepadMappings((const char*)string->bytes);
+	return glfwUpdateGamepadMappings((const char*)hl_to_utf8(string->bytes));
 }
 
 HL_PRIM const vbyte* FUNC_NAME(glfw_get_gamepad_name)(int jid) {
@@ -538,11 +538,11 @@ HL_PRIM void FUNC_NAME(glfw_get_gamepad_state)(int jid, JoystickState* state) {
 	glfwGetGamepadState(jid, &fakeState);
 
 	// arrays will be setup on the haxe side
-	for (int i = 0; i < 15; ++i) {
+	for (int i = 0; i < 14; ++i) {
 		hl_aptr(state->buttons, int)[i] = fakeState.buttons[i];
 	}
 
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < 5; ++i) {
 		hl_aptr(state->axes, float)[i] = fakeState.axes[i];
 	}
 }

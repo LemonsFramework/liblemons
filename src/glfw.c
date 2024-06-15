@@ -349,7 +349,7 @@ HL_PRIM void FUNC_NAME(glfw_swap_buffers)(GLFWwindow* window) {
 }
 
 
-DEFINE_PRIM(_WINDOW, PRIM_NAME(glfw_create_window), _I32 _I32 _STRING _MONITOR _NULL(_WINDOW));
+DEFINE_PRIM(_WINDOW, PRIM_NAME(glfw_create_window), _I32 _I32 _STRING _MONITOR _WINDOW);
 DEFINE_PRIM(_VOID, PRIM_NAME(glfw_destroy_window), _WINDOW);
 DEFINE_PRIM(_I32, PRIM_NAME(glfw_window_should_close), _WINDOW);
 DEFINE_PRIM(_VOID, PRIM_NAME(glfw_set_window_should_close), _WINDOW _I32);

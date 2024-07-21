@@ -6,7 +6,7 @@ import sys.io.File.getContent;
 
 using StringTools;
 
-typedef Thingy = {name:String, defineName:String, ?appendFile:String, output:String, xmlName:String, haxeName:String, lightColor:Int, darkColor:Int, features:Array<String>}
+typedef Thingy = {name:String, defineName:String, ?appendFile:String, output:String, xmlName:String, haxeName:String, lightColor:Int, darkColor:Int, features:Array<String>, exclude:EReg}
 
 class GLADGenetator {
 	final typeMap:Map<String, String> = [
@@ -155,7 +155,10 @@ class GLADGenetator {
 			functionBody.add('\thl_add_root(&$paramName);\n');
 			functionBody.add('\tdebugFunc = $paramName;\n');
 			return 'onDebugData';
-		}
+		},
+		'GLuint *' => (functionBody:StringBuf, paramName:String) -> {
+			return '&$paramName';
+		},
 	];
 
 
@@ -264,12 +267,7 @@ class GLADGenetator {
 			var proto = command.elementsNamed('proto').next();
 			var name = proto.elementsNamed('name').next().firstChild().nodeValue;
 
-			if (!requiredFunctions.contains(name)) continue;
-
-			prims.add('DEFINE_PRIM(');
-			haxeFile.add('\tpublic static function ');
-
-			commands.add('HL_PRIM ');
+			if (!requiredFunctions.contains(name) /* || data.exclude.match(name) */) continue;
 
 			var jaxeReturn:String = '';
 			var typeThing:StringBuf = new StringBuf();
@@ -282,6 +280,14 @@ class GLADGenetator {
 							var typeStr = typeThing.toString();
 							typeStr = typeStr.replace('const', '');
 							typeStr = typeStr.ltrim();
+							typeThing = new StringBuf();
+							haxeFile.add('\tpublic static function ');
+							haxeFile.add(func.firstChild().nodeValue);
+
+							prims.add('DEFINE_PRIM(');
+
+							commands.add('HL_PRIM ');
+
 							prims.add(typeMap[typeStr.rtrim()]);
 							prims.add(', ');
 							prims.add('PRIM_NAME(');
@@ -293,10 +299,8 @@ class GLADGenetator {
 							commands.add(camelToSnake(func.firstChild().nodeValue));
 							commands.add(')');
 
-							haxeFile.add(func.firstChild().nodeValue);
 							jaxeReturn = haxeTypeMap[typeStr.rtrim()];
 
-							typeThing = new StringBuf();
 					}
 					continue;
 				} else typeThing.add(func.nodeValue);
@@ -320,7 +324,6 @@ class GLADGenetator {
 								var typeStr:String = typeThing.toString();
 								typeStr = typeStr.replace('const', '');
 								typeStr = typeStr.ltrim();
-
 
 								if (argumentMap.exists(typeStr.rtrim())) commands.add(argumentMap[typeStr.rtrim()]);
 								else commands.add(typeStr);

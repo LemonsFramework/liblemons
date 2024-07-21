@@ -49,6 +49,77 @@ HL_PRIM int FUNC_NAME(glad_load_gl)() {
 
 DEFINE_PRIM(_I32, PRIM_NAME(glad_load_gl), _NO_ARG);
 
+HL_PRIM int FUNC_NAME(gl_gen_buffers)() {
+	GLuint buf;
+	glGenBuffers(1, &buf);
+	return buf;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_framebuffers)() {
+	GLuint buf;
+	glGenFramebuffers(1, &buf);
+	return buf;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_program_pipelines)() {
+	GLuint pipe;
+	glGenProgramPipelines(1, &pipe);
+	return pipe;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_queries)() {
+	GLuint queer;
+	glGenQueries(1, &queer);
+	return queer;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_renderbuffers)() {
+	GLuint rend;
+	glGenRenderbuffers(1, &rend);
+	return queer;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_samplers)() {
+	GLuint samplers;
+	glGenSamplers(1, &samplers);
+	return samplers;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_textures)() {
+	GLuint textures;
+	glGenTextures(1, &textures);
+	return textures;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_transform_feedbacks)() {
+	GLuint ids;
+	glGenTransformFeedbacks(1, &ids);
+	return ids;
+}
+
+HL_PRIM int FUNC_NAME(gl_gen_vertex_arrays)() {
+	GLuint arrays;
+	glGenVertexArrays(1, &arrays);
+	return arrays;
+}
+
+HL_PRIM void FUNC_NAME(gl_generate_mipmap)(GLenum target) {
+	return glGenerateMipmap(target);
+}
+
+
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_buffers), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_framebuffers), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_program_pipelines), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_queries), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_renderbuffers), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_samplers), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_textures), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_transform_feedbacks), _NO_ARG);
+DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_vertex_arrays), _NO_ARG);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_generate_mipmap), _I32);
+
+
 
 HL_PRIM void FUNC_NAME(gl_active_shader_program)(GLuint pipeline, GLuint program) {
 	return glActiveShaderProgram(pipeline, program);
@@ -95,11 +166,11 @@ HL_PRIM void FUNC_NAME(gl_bind_buffer_range)(GLenum target, GLuint index, GLuint
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_buffers_base)(GLenum target, GLuint first, GLsizei count, GLuint *buffers) {
-	return glBindBuffersBase(target, first, count, &buffers);
+	return glBindBuffersBase(target, first, count, buffers);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_buffers_range)(GLenum target, GLuint first, GLsizei count, GLuint *buffers, varray *offsets, varray *sizes) {
-	return glBindBuffersRange(target, first, count, &buffers, hl_aptr(offsets, GLintptr), hl_aptr(sizes, GLsizeiptr));
+	return glBindBuffersRange(target, first, count, buffers, hl_aptr(offsets, GLintptr), hl_aptr(sizes, GLsizeiptr));
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_frag_data_location)(GLuint program, GLuint color, vstring *name) {
@@ -119,7 +190,7 @@ HL_PRIM void FUNC_NAME(gl_bind_image_texture)(GLuint unit, GLuint texture, GLint
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_image_textures)(GLuint first, GLsizei count, GLuint *textures) {
-	return glBindImageTextures(first, count, &textures);
+	return glBindImageTextures(first, count, textures);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_program_pipeline)(GLuint pipeline) {
@@ -135,7 +206,7 @@ HL_PRIM void FUNC_NAME(gl_bind_sampler)(GLuint unit, GLuint sampler) {
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_samplers)(GLuint first, GLsizei count, GLuint *samplers) {
-	return glBindSamplers(first, count, &samplers);
+	return glBindSamplers(first, count, samplers);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_texture)(GLenum target, GLuint texture) {
@@ -143,7 +214,7 @@ HL_PRIM void FUNC_NAME(gl_bind_texture)(GLenum target, GLuint texture) {
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_textures)(GLuint first, GLsizei count, GLuint *textures) {
-	return glBindTextures(first, count, &textures);
+	return glBindTextures(first, count, textures);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_transform_feedback)(GLenum target, GLuint id) {
@@ -159,7 +230,7 @@ HL_PRIM void FUNC_NAME(gl_bind_vertex_buffer)(GLuint bindingindex, GLuint buffer
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_vertex_buffers)(GLuint first, GLsizei count, GLuint *buffers, varray *offsets, GLsizei *strides) {
-	return glBindVertexBuffers(first, count, &buffers, hl_aptr(offsets, GLintptr), strides);
+	return glBindVertexBuffers(first, count, buffers, hl_aptr(offsets, GLintptr), strides);
 }
 
 HL_PRIM void FUNC_NAME(gl_blend_color)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
@@ -247,7 +318,7 @@ HL_PRIM void FUNC_NAME(gl_clear_bufferiv)(GLenum buffer, GLint drawbuffer, GLint
 }
 
 HL_PRIM void FUNC_NAME(gl_clear_bufferuiv)(GLenum buffer, GLint drawbuffer, GLuint *value) {
-	return glClearBufferuiv(buffer, drawbuffer, &value);
+	return glClearBufferuiv(buffer, drawbuffer, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_clear_color)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
@@ -291,7 +362,7 @@ HL_PRIM void FUNC_NAME(gl_color_p3ui)(GLenum type, GLuint color) {
 }
 
 HL_PRIM void FUNC_NAME(gl_color_p3uiv)(GLenum type, GLuint *color) {
-	return glColorP3uiv(type, &color);
+	return glColorP3uiv(type, color);
 }
 
 HL_PRIM void FUNC_NAME(gl_color_p4ui)(GLenum type, GLuint color) {
@@ -299,7 +370,7 @@ HL_PRIM void FUNC_NAME(gl_color_p4ui)(GLenum type, GLuint color) {
 }
 
 HL_PRIM void FUNC_NAME(gl_color_p4uiv)(GLenum type, GLuint *color) {
-	return glColorP4uiv(type, &color);
+	return glColorP4uiv(type, color);
 }
 
 HL_PRIM void FUNC_NAME(gl_compile_shader)(GLuint shader) {
@@ -381,7 +452,7 @@ HL_PRIM void FUNC_NAME(gl_debug_message_callback)(vclosure *callback, vbyte *use
 }
 
 HL_PRIM void FUNC_NAME(gl_debug_message_control)(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint *ids, GLboolean enabled) {
-	return glDebugMessageControl(source, type, severity, count, &ids, enabled);
+	return glDebugMessageControl(source, type, severity, count, ids, enabled);
 }
 
 HL_PRIM void FUNC_NAME(gl_debug_message_insert)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, vstring *buf) {
@@ -389,11 +460,11 @@ HL_PRIM void FUNC_NAME(gl_debug_message_insert)(GLenum source, GLenum type, GLui
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_buffers)(GLsizei n, GLuint *buffers) {
-	return glDeleteBuffers(n, &buffers);
+	return glDeleteBuffers(n, buffers);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_framebuffers)(GLsizei n, GLuint *framebuffers) {
-	return glDeleteFramebuffers(n, &framebuffers);
+	return glDeleteFramebuffers(n, framebuffers);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_program)(GLuint program) {
@@ -401,19 +472,19 @@ HL_PRIM void FUNC_NAME(gl_delete_program)(GLuint program) {
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_program_pipelines)(GLsizei n, GLuint *pipelines) {
-	return glDeleteProgramPipelines(n, &pipelines);
+	return glDeleteProgramPipelines(n, pipelines);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_queries)(GLsizei n, GLuint *ids) {
-	return glDeleteQueries(n, &ids);
+	return glDeleteQueries(n, ids);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_renderbuffers)(GLsizei n, GLuint *renderbuffers) {
-	return glDeleteRenderbuffers(n, &renderbuffers);
+	return glDeleteRenderbuffers(n, renderbuffers);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_samplers)(GLsizei count, GLuint *samplers) {
-	return glDeleteSamplers(count, &samplers);
+	return glDeleteSamplers(count, samplers);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_shader)(GLuint shader) {
@@ -425,15 +496,15 @@ HL_PRIM void FUNC_NAME(gl_delete_sync)(GLsync sync) {
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_textures)(GLsizei n, GLuint *textures) {
-	return glDeleteTextures(n, &textures);
+	return glDeleteTextures(n, textures);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_transform_feedbacks)(GLsizei n, GLuint *ids) {
-	return glDeleteTransformFeedbacks(n, &ids);
+	return glDeleteTransformFeedbacks(n, ids);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_vertex_arrays)(GLsizei n, GLuint *arrays) {
-	return glDeleteVertexArrays(n, &arrays);
+	return glDeleteVertexArrays(n, arrays);
 }
 
 HL_PRIM void FUNC_NAME(gl_depth_func)(GLenum func) {
@@ -636,46 +707,6 @@ HL_PRIM void FUNC_NAME(gl_front_face)(GLenum mode) {
 	return glFrontFace(mode);
 }
 
-HL_PRIM void FUNC_NAME(gl_gen_buffers)(GLsizei n, GLuint *buffers) {
-	return glGenBuffers(n, &buffers);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_framebuffers)(GLsizei n, GLuint *framebuffers) {
-	return glGenFramebuffers(n, &framebuffers);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_program_pipelines)(GLsizei n, GLuint *pipelines) {
-	return glGenProgramPipelines(n, &pipelines);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_queries)(GLsizei n, GLuint *ids) {
-	return glGenQueries(n, &ids);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_renderbuffers)(GLsizei n, GLuint *renderbuffers) {
-	return glGenRenderbuffers(n, &renderbuffers);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_samplers)(GLsizei count, GLuint *samplers) {
-	return glGenSamplers(count, &samplers);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_textures)(GLsizei n, GLuint *textures) {
-	return glGenTextures(n, &textures);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_transform_feedbacks)(GLsizei n, GLuint *ids) {
-	return glGenTransformFeedbacks(n, &ids);
-}
-
-HL_PRIM void FUNC_NAME(gl_gen_vertex_arrays)(GLsizei n, GLuint *arrays) {
-	return glGenVertexArrays(n, &arrays);
-}
-
-HL_PRIM void FUNC_NAME(gl_generate_mipmap)(GLenum target) {
-	return glGenerateMipmap(target);
-}
-
 HL_PRIM void FUNC_NAME(gl_get_active_atomic_counter_bufferiv)(GLuint program, GLuint bufferIndex, GLenum pname, GLint *params) {
 	return glGetActiveAtomicCounterBufferiv(program, bufferIndex, pname, params);
 }
@@ -713,11 +744,11 @@ HL_PRIM void FUNC_NAME(gl_get_active_uniform_name)(GLuint program, GLuint unifor
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_uniformsiv)(GLuint program, GLsizei uniformCount, GLuint *uniformIndices, GLenum pname, GLint *params) {
-	return glGetActiveUniformsiv(program, uniformCount, &uniformIndices, pname, params);
+	return glGetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_attached_shaders)(GLuint program, GLsizei maxCount, GLsizei *count, GLuint *shaders) {
-	return glGetAttachedShaders(program, maxCount, count, &shaders);
+	return glGetAttachedShaders(program, maxCount, count, shaders);
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_attrib_location)(GLuint program, vstring *name) {
@@ -753,7 +784,7 @@ HL_PRIM void FUNC_NAME(gl_get_compressed_tex_image)(GLenum target, GLint level, 
 }
 
 HL_PRIM GLuint FUNC_NAME(gl_get_debug_message_log)(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, vstring *messageLog) {
-	return glGetDebugMessageLog(count, bufSize, sources, types, &ids, severities, lengths, messageLog->bytes);
+	return glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog->bytes);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_doublei_v)(GLenum target, GLuint index, GLdouble *data) {
@@ -897,7 +928,7 @@ HL_PRIM void FUNC_NAME(gl_get_query_objectui64v)(GLuint id, GLenum pname, GLuint
 }
 
 HL_PRIM void FUNC_NAME(gl_get_query_objectuiv)(GLuint id, GLenum pname, GLuint *params) {
-	return glGetQueryObjectuiv(id, pname, &params);
+	return glGetQueryObjectuiv(id, pname, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_queryiv)(GLenum target, GLenum pname, GLint *params) {
@@ -913,7 +944,7 @@ HL_PRIM void FUNC_NAME(gl_get_sampler_parameter_iiv)(GLuint sampler, GLenum pnam
 }
 
 HL_PRIM void FUNC_NAME(gl_get_sampler_parameter_iuiv)(GLuint sampler, GLenum pname, GLuint *params) {
-	return glGetSamplerParameterIuiv(sampler, pname, &params);
+	return glGetSamplerParameterIuiv(sampler, pname, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_sampler_parameterfv)(GLuint sampler, GLenum pname, GLfloat *params) {
@@ -977,7 +1008,7 @@ HL_PRIM void FUNC_NAME(gl_get_tex_parameter_iiv)(GLenum target, GLenum pname, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_get_tex_parameter_iuiv)(GLenum target, GLenum pname, GLuint *params) {
-	return glGetTexParameterIuiv(target, pname, &params);
+	return glGetTexParameterIuiv(target, pname, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_tex_parameterfv)(GLenum target, GLenum pname, GLfloat *params) {
@@ -997,7 +1028,7 @@ HL_PRIM GLuint FUNC_NAME(gl_get_uniform_block_index)(GLuint program, vstring *un
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniform_indices)(GLuint program, GLsizei uniformCount, varray *uniformNames, GLuint *uniformIndices) {
-	return glGetUniformIndices(program, uniformCount, hl_aptr(uniformNames, GLchar *), &uniformIndices);
+	return glGetUniformIndices(program, uniformCount, hl_aptr(uniformNames, GLchar *), uniformIndices);
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_uniform_location)(GLuint program, vstring *name) {
@@ -1005,7 +1036,7 @@ HL_PRIM GLint FUNC_NAME(gl_get_uniform_location)(GLuint program, vstring *name) 
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniform_subroutineuiv)(GLenum shadertype, GLint location, GLuint *params) {
-	return glGetUniformSubroutineuiv(shadertype, location, &params);
+	return glGetUniformSubroutineuiv(shadertype, location, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniformdv)(GLuint program, GLint location, GLdouble *params) {
@@ -1021,7 +1052,7 @@ HL_PRIM void FUNC_NAME(gl_get_uniformiv)(GLuint program, GLint location, GLint *
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniformuiv)(GLuint program, GLint location, GLuint *params) {
-	return glGetUniformuiv(program, location, &params);
+	return glGetUniformuiv(program, location, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_vertex_attrib_iiv)(GLuint index, GLenum pname, GLint *params) {
@@ -1029,7 +1060,7 @@ HL_PRIM void FUNC_NAME(gl_get_vertex_attrib_iiv)(GLuint index, GLenum pname, GLi
 }
 
 HL_PRIM void FUNC_NAME(gl_get_vertex_attrib_iuiv)(GLuint index, GLenum pname, GLuint *params) {
-	return glGetVertexAttribIuiv(index, pname, &params);
+	return glGetVertexAttribIuiv(index, pname, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_vertex_attrib_ldv)(GLuint index, GLenum pname, GLdouble *params) {
@@ -1189,7 +1220,7 @@ HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p1ui)(GLenum texture, GLenum type, GLu
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p1uiv)(GLenum texture, GLenum type, GLuint *coords) {
-	return glMultiTexCoordP1uiv(texture, type, &coords);
+	return glMultiTexCoordP1uiv(texture, type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p2ui)(GLenum texture, GLenum type, GLuint coords) {
@@ -1197,7 +1228,7 @@ HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p2ui)(GLenum texture, GLenum type, GLu
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p2uiv)(GLenum texture, GLenum type, GLuint *coords) {
-	return glMultiTexCoordP2uiv(texture, type, &coords);
+	return glMultiTexCoordP2uiv(texture, type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p3ui)(GLenum texture, GLenum type, GLuint coords) {
@@ -1205,7 +1236,7 @@ HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p3ui)(GLenum texture, GLenum type, GLu
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p3uiv)(GLenum texture, GLenum type, GLuint *coords) {
-	return glMultiTexCoordP3uiv(texture, type, &coords);
+	return glMultiTexCoordP3uiv(texture, type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p4ui)(GLenum texture, GLenum type, GLuint coords) {
@@ -1213,7 +1244,7 @@ HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p4ui)(GLenum texture, GLenum type, GLu
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_tex_coord_p4uiv)(GLenum texture, GLenum type, GLuint *coords) {
-	return glMultiTexCoordP4uiv(texture, type, &coords);
+	return glMultiTexCoordP4uiv(texture, type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_normal_p3ui)(GLenum type, GLuint coords) {
@@ -1221,7 +1252,7 @@ HL_PRIM void FUNC_NAME(gl_normal_p3ui)(GLenum type, GLuint coords) {
 }
 
 HL_PRIM void FUNC_NAME(gl_normal_p3uiv)(GLenum type, GLuint *coords) {
-	return glNormalP3uiv(type, &coords);
+	return glNormalP3uiv(type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_object_label)(GLenum identifier, GLuint name, GLsizei length, vstring *label) {
@@ -1325,7 +1356,7 @@ HL_PRIM void FUNC_NAME(gl_program_uniform1ui)(GLuint program, GLint location, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform1uiv)(GLuint program, GLint location, GLsizei count, GLuint *value) {
-	return glProgramUniform1uiv(program, location, count, &value);
+	return glProgramUniform1uiv(program, location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform2d)(GLuint program, GLint location, GLdouble v0, GLdouble v1) {
@@ -1357,7 +1388,7 @@ HL_PRIM void FUNC_NAME(gl_program_uniform2ui)(GLuint program, GLint location, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform2uiv)(GLuint program, GLint location, GLsizei count, GLuint *value) {
-	return glProgramUniform2uiv(program, location, count, &value);
+	return glProgramUniform2uiv(program, location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform3d)(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2) {
@@ -1389,7 +1420,7 @@ HL_PRIM void FUNC_NAME(gl_program_uniform3ui)(GLuint program, GLint location, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform3uiv)(GLuint program, GLint location, GLsizei count, GLuint *value) {
-	return glProgramUniform3uiv(program, location, count, &value);
+	return glProgramUniform3uiv(program, location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform4d)(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3) {
@@ -1421,7 +1452,7 @@ HL_PRIM void FUNC_NAME(gl_program_uniform4ui)(GLuint program, GLint location, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform4uiv)(GLuint program, GLint location, GLsizei count, GLuint *value) {
-	return glProgramUniform4uiv(program, location, count, &value);
+	return glProgramUniform4uiv(program, location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_program_uniform_matrix2dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
@@ -1545,7 +1576,7 @@ HL_PRIM void FUNC_NAME(gl_sampler_parameter_iiv)(GLuint sampler, GLenum pname, G
 }
 
 HL_PRIM void FUNC_NAME(gl_sampler_parameter_iuiv)(GLuint sampler, GLenum pname, GLuint *param) {
-	return glSamplerParameterIuiv(sampler, pname, &param);
+	return glSamplerParameterIuiv(sampler, pname, param);
 }
 
 HL_PRIM void FUNC_NAME(gl_sampler_parameterf)(GLuint sampler, GLenum pname, GLfloat param) {
@@ -1585,11 +1616,11 @@ HL_PRIM void FUNC_NAME(gl_secondary_color_p3ui)(GLenum type, GLuint color) {
 }
 
 HL_PRIM void FUNC_NAME(gl_secondary_color_p3uiv)(GLenum type, GLuint *color) {
-	return glSecondaryColorP3uiv(type, &color);
+	return glSecondaryColorP3uiv(type, color);
 }
 
 HL_PRIM void FUNC_NAME(gl_shader_binary)(GLsizei count, GLuint *shaders, GLenum binaryFormat, vbyte *binary, GLsizei length) {
-	return glShaderBinary(count, &shaders, binaryFormat, binary, length);
+	return glShaderBinary(count, shaders, binaryFormat, binary, length);
 }
 
 HL_PRIM void FUNC_NAME(gl_shader_source)(GLuint shader, GLsizei count, varray *string, GLint *length) {
@@ -1637,7 +1668,7 @@ HL_PRIM void FUNC_NAME(gl_tex_coord_p1ui)(GLenum type, GLuint coords) {
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p1uiv)(GLenum type, GLuint *coords) {
-	return glTexCoordP1uiv(type, &coords);
+	return glTexCoordP1uiv(type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p2ui)(GLenum type, GLuint coords) {
@@ -1645,7 +1676,7 @@ HL_PRIM void FUNC_NAME(gl_tex_coord_p2ui)(GLenum type, GLuint coords) {
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p2uiv)(GLenum type, GLuint *coords) {
-	return glTexCoordP2uiv(type, &coords);
+	return glTexCoordP2uiv(type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p3ui)(GLenum type, GLuint coords) {
@@ -1653,7 +1684,7 @@ HL_PRIM void FUNC_NAME(gl_tex_coord_p3ui)(GLenum type, GLuint coords) {
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p3uiv)(GLenum type, GLuint *coords) {
-	return glTexCoordP3uiv(type, &coords);
+	return glTexCoordP3uiv(type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p4ui)(GLenum type, GLuint coords) {
@@ -1661,7 +1692,7 @@ HL_PRIM void FUNC_NAME(gl_tex_coord_p4ui)(GLenum type, GLuint coords) {
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_coord_p4uiv)(GLenum type, GLuint *coords) {
-	return glTexCoordP4uiv(type, &coords);
+	return glTexCoordP4uiv(type, coords);
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_image1_d)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, vbyte *pixels) {
@@ -1689,7 +1720,7 @@ HL_PRIM void FUNC_NAME(gl_tex_parameter_iiv)(GLenum target, GLenum pname, GLint 
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_parameter_iuiv)(GLenum target, GLenum pname, GLuint *params) {
-	return glTexParameterIuiv(target, pname, &params);
+	return glTexParameterIuiv(target, pname, params);
 }
 
 HL_PRIM void FUNC_NAME(gl_tex_parameterf)(GLenum target, GLenum pname, GLfloat param) {
@@ -1777,7 +1808,7 @@ HL_PRIM void FUNC_NAME(gl_uniform1ui)(GLint location, GLuint v0) {
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform1uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform1uiv(location, count, &value);
+	return glUniform1uiv(location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform2d)(GLint location, GLdouble x, GLdouble y) {
@@ -1809,7 +1840,7 @@ HL_PRIM void FUNC_NAME(gl_uniform2ui)(GLint location, GLuint v0, GLuint v1) {
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform2uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform2uiv(location, count, &value);
+	return glUniform2uiv(location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform3d)(GLint location, GLdouble x, GLdouble y, GLdouble z) {
@@ -1841,7 +1872,7 @@ HL_PRIM void FUNC_NAME(gl_uniform3ui)(GLint location, GLuint v0, GLuint v1, GLui
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform3uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform3uiv(location, count, &value);
+	return glUniform3uiv(location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform4d)(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w) {
@@ -1873,7 +1904,7 @@ HL_PRIM void FUNC_NAME(gl_uniform4ui)(GLint location, GLuint v0, GLuint v1, GLui
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform4uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform4uiv(location, count, &value);
+	return glUniform4uiv(location, count, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_block_binding)(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding) {
@@ -1953,7 +1984,7 @@ HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3fv)(GLint location, GLsizei count, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_subroutinesuiv)(GLenum shadertype, GLsizei count, GLuint *indices) {
-	return glUniformSubroutinesuiv(shadertype, count, &indices);
+	return glUniformSubroutinesuiv(shadertype, count, indices);
 }
 
 HL_PRIM GLboolean FUNC_NAME(gl_unmap_buffer)(GLenum target) {
@@ -2069,7 +2100,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib4_nubv)(GLuint index, GLubyte *v) {
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib4_nuiv)(GLuint index, GLuint *v) {
-	return glVertexAttrib4Nuiv(index, &v);
+	return glVertexAttrib4Nuiv(index, v);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib4_nusv)(GLuint index, GLushort *v) {
@@ -2113,7 +2144,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib4ubv)(GLuint index, GLubyte *v) {
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib4uiv)(GLuint index, GLuint *v) {
-	return glVertexAttrib4uiv(index, &v);
+	return glVertexAttrib4uiv(index, v);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib4usv)(GLuint index, GLushort *v) {
@@ -2145,7 +2176,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_i1ui)(GLuint index, GLuint x) {
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i1uiv)(GLuint index, GLuint *v) {
-	return glVertexAttribI1uiv(index, &v);
+	return glVertexAttribI1uiv(index, v);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i2i)(GLuint index, GLint x, GLint y) {
@@ -2161,7 +2192,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_i2ui)(GLuint index, GLuint x, GLuint y) 
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i2uiv)(GLuint index, GLuint *v) {
-	return glVertexAttribI2uiv(index, &v);
+	return glVertexAttribI2uiv(index, v);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i3i)(GLuint index, GLint x, GLint y, GLint z) {
@@ -2177,7 +2208,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_i3ui)(GLuint index, GLuint x, GLuint y, 
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i3uiv)(GLuint index, GLuint *v) {
-	return glVertexAttribI3uiv(index, &v);
+	return glVertexAttribI3uiv(index, v);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i4bv)(GLuint index, GLbyte *v) {
@@ -2205,7 +2236,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_i4ui)(GLuint index, GLuint x, GLuint y, 
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i4uiv)(GLuint index, GLuint *v) {
-	return glVertexAttribI4uiv(index, &v);
+	return glVertexAttribI4uiv(index, v);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_i4usv)(GLuint index, GLushort *v) {
@@ -2265,7 +2296,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_p1ui)(GLuint index, GLenum type, GLboole
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p1uiv)(GLuint index, GLenum type, GLboolean normalized, GLuint *value) {
-	return glVertexAttribP1uiv(index, type, normalized, &value);
+	return glVertexAttribP1uiv(index, type, normalized, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p2ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value) {
@@ -2273,7 +2304,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_p2ui)(GLuint index, GLenum type, GLboole
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p2uiv)(GLuint index, GLenum type, GLboolean normalized, GLuint *value) {
-	return glVertexAttribP2uiv(index, type, normalized, &value);
+	return glVertexAttribP2uiv(index, type, normalized, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p3ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value) {
@@ -2281,7 +2312,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_p3ui)(GLuint index, GLenum type, GLboole
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p3uiv)(GLuint index, GLenum type, GLboolean normalized, GLuint *value) {
-	return glVertexAttribP3uiv(index, type, normalized, &value);
+	return glVertexAttribP3uiv(index, type, normalized, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p4ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value) {
@@ -2289,7 +2320,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_p4ui)(GLuint index, GLenum type, GLboole
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_p4uiv)(GLuint index, GLenum type, GLboolean normalized, GLuint *value) {
-	return glVertexAttribP4uiv(index, type, normalized, &value);
+	return glVertexAttribP4uiv(index, type, normalized, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_pointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, vbyte *pointer) {
@@ -2305,7 +2336,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_p2ui)(GLenum type, GLuint value) {
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_p2uiv)(GLenum type, GLuint *value) {
-	return glVertexP2uiv(type, &value);
+	return glVertexP2uiv(type, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_p3ui)(GLenum type, GLuint value) {
@@ -2313,7 +2344,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_p3ui)(GLenum type, GLuint value) {
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_p3uiv)(GLenum type, GLuint *value) {
-	return glVertexP3uiv(type, &value);
+	return glVertexP3uiv(type, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_p4ui)(GLenum type, GLuint value) {
@@ -2321,7 +2352,7 @@ HL_PRIM void FUNC_NAME(gl_vertex_p4ui)(GLenum type, GLuint value) {
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_p4uiv)(GLenum type, GLuint *value) {
-	return glVertexP4uiv(type, &value);
+	return glVertexP4uiv(type, value);
 }
 
 HL_PRIM void FUNC_NAME(gl_viewport)(GLint x, GLint y, GLsizei width, GLsizei height) {
@@ -2490,16 +2521,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_framebuffer_texture2_d), _I32 _I32 _I32 _I32 _I3
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_framebuffer_texture3_d), _I32 _I32 _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_framebuffer_texture_layer), _I32 _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_front_face), _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_buffers), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_framebuffers), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_program_pipelines), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_queries), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_renderbuffers), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_samplers), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_textures), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_transform_feedbacks), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_gen_vertex_arrays), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_generate_mipmap), _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_active_atomic_counter_bufferiv), _I32 _I32 _I32 _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_active_attrib), _I32 _I32 _I32 _REF(_I32) _REF(_I32) _REF(_I32) _STRING);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_active_subroutine_name), _I32 _I32 _I32 _I32 _REF(_I32) _STRING);

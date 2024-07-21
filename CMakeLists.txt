@@ -36,7 +36,7 @@ if(DEFINED $ENV{HASHLINK})
 	message(FATAL_ERROR "the \"HASHLINK\" enviroment variable must be defined")
 else()
 	target_include_directories(liblemons PUBLIC $ENV{HASHLINK}/include)
-	target_link_libraries(liblemons $ENV{HASHLINK}/libhl${CMAKE_SHARED_LIBRARY_SUFFIX})
+	target_link_libraries(liblemons $ENV{HASHLINK}/libhl${CMAKE_STATIC_LIBRARY_SUFFIX})
 endif()
 
 target_include_directories(liblemons PUBLIC lib/include/)

@@ -155,10 +155,7 @@ class GLADGenetator {
 			functionBody.add('\thl_add_root(&$paramName);\n');
 			functionBody.add('\tdebugFunc = $paramName;\n');
 			return 'onDebugData';
-		},
-		'GLuint *' => (functionBody:StringBuf, paramName:String) -> {
-			return '&$paramName';
-		},
+		}
 	];
 
 
@@ -181,7 +178,7 @@ class GLADGenetator {
 			'GL_VERSION_4_2', 
 			'GL_VERSION_4_3', 
 			'GL_VERSION_4_4'
-		], appendFile: 'glInclude', haxeName: 'OpenGL', defineName: 'GLAD_GL_IMPLEMENTATION'},
+		], appendFile: 'glInclude', haxeName: 'OpenGL', defineName: 'GLAD_GL_IMPLEMENTATION', exclude: ~/\bglGen\w*\b/},
 		// will do later when im not lazy
 		// {name: 'vulkan', output: 'out/vulkan', xmlName: 'vk.xml', lightColor: 91, darkColor: 31, features: [
 		// 	'VK_VERSION_1_0',
@@ -267,7 +264,7 @@ class GLADGenetator {
 			var proto = command.elementsNamed('proto').next();
 			var name = proto.elementsNamed('name').next().firstChild().nodeValue;
 
-			if (!requiredFunctions.contains(name) /* || data.exclude.match(name) */) continue;
+			if (!requiredFunctions.contains(name) || data.exclude.match(name)) continue;
 
 			var jaxeReturn:String = '';
 			var typeThing:StringBuf = new StringBuf();
@@ -324,6 +321,7 @@ class GLADGenetator {
 								var typeStr:String = typeThing.toString();
 								typeStr = typeStr.replace('const', '');
 								typeStr = typeStr.ltrim();
+
 
 								if (argumentMap.exists(typeStr.rtrim())) commands.add(argumentMap[typeStr.rtrim()]);
 								else commands.add(typeStr);

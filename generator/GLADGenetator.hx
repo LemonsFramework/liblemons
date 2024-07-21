@@ -6,7 +6,7 @@ import sys.io.File.getContent;
 
 using StringTools;
 
-typedef Thingy = {name:String, defineName:String, ?appendFile:String, output:String, xmlName:String, haxeName:String, lightColor:Int, darkColor:Int, features:Array<String>, exclude:EReg}
+typedef Thingy = {name:String, defineName:String, ?appendFile:String, output:String, xmlName:String, haxeName:String, lightColor:Int, darkColor:Int, features:Array<String>, ?exclude:EReg}
 
 class GLADGenetator {
 	final typeMap:Map<String, String> = [

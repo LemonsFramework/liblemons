@@ -32,55 +32,55 @@ HL_PRIM int FUNC_NAME(glad_load_gl)() {
 DEFINE_PRIM(_I32, PRIM_NAME(glad_load_gl), _NO_ARG);
 
 HL_PRIM int FUNC_NAME(gl_gen_buffers)() {
-	GLuint buf;
+	GLuint buf = 0;
 	glGenBuffers(1, &buf);
 	return buf;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_framebuffers)() {
-	GLuint buf;
+	GLuint buf = 0;
 	glGenFramebuffers(1, &buf);
 	return buf;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_program_pipelines)() {
-	GLuint pipe;
+	GLuint pipe = 0;
 	glGenProgramPipelines(1, &pipe);
 	return pipe;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_queries)() {
-	GLuint queer;
+	GLuint queer = 0;
 	glGenQueries(1, &queer);
 	return queer;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_renderbuffers)() {
-	GLuint rend;
+	GLuint rend = 0;
 	glGenRenderbuffers(1, &rend);
-	return queer;
+	return rend;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_samplers)() {
-	GLuint samplers;
+	GLuint samplers = 0;
 	glGenSamplers(1, &samplers);
 	return samplers;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_textures)() {
-	GLuint textures;
+	GLuint textures = 0;
 	glGenTextures(1, &textures);
 	return textures;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_transform_feedbacks)() {
-	GLuint ids;
+	GLuint ids = 0;
 	glGenTransformFeedbacks(1, &ids);
 	return ids;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_vertex_arrays)() {
-	GLuint arrays;
+	GLuint arrays = 0;
 	glGenVertexArrays(1, &arrays);
 	return arrays;
 }

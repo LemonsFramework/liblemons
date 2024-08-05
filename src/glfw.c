@@ -11,9 +11,16 @@
 #define FUNC_NAME(n) HL_NAME(glfw_##n)
 #define PRIM_NAME(n) glfw_##n
 
+/*
+giving haxe the raw types causes hl/c generation to be wrong 
 #define _MONITOR _ABSTRACT(GLFWmonitor*)
 #define _WINDOW _ABSTRACT(GLFWwindow*)
 #define _CURSOR _ABSTRACT(GLFWcursor*)
+*/
+
+#define _MONITOR _I64
+#define _WINDOW _I64
+#define _CURSOR _I64
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -65,10 +72,11 @@ HL_PRIM varray* FUNC_NAME(glfw_get_monitors)() {
 	int count = 0;
 	GLFWmonitor** monitors = glfwGetMonitors(&count);
 
-	varray* monitorArray = hl_alloc_array(&hlt_abstract, count);
+	varray* monitorArray = hl_alloc_array(&hlt_i64, count);
 
 	for (int i = 0; i < count; ++i) {
-		hl_aptr(monitorArray, GLFWmonitor*)[i] = monitors[i];
+		GLFWmonitor* montor = monitors[i];
+		hl_aptr(monitorArray, int64)[i] = (int64)&*montor;
 	}
 
 	return monitorArray;
@@ -166,28 +174,29 @@ DEFINE_PRIM(_I32, PRIM_NAME(glfw_extension_supported), _STRING);
 //// monitor stuff																	  ////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-HL_PRIM GLFWmonitor* FUNC_NAME(glfw_get_primary_monitor)() {
-	return glfwGetPrimaryMonitor();
+HL_PRIM int64 FUNC_NAME(glfw_get_primary_monitor)() {
+	GLFWmonitor* mon = glfwGetPrimaryMonitor();
+	return (int64)&*mon;
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_monitor_pos)(GLFWmonitor* monitor, int* xpos, int* ypos) {
-	glfwGetMonitorPos(monitor, xpos, ypos);
+HL_PRIM void FUNC_NAME(glfw_get_monitor_pos)(int64 monitor, int* xpos, int* ypos) {
+	glfwGetMonitorPos((GLFWmonitor*)monitor, xpos, ypos);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_monitor_workarea)(GLFWmonitor* monitor, int* xpos, int* ypos, int* width, int* height) {
-	glfwGetMonitorWorkarea(monitor, xpos, ypos, width, height);
+HL_PRIM void FUNC_NAME(glfw_get_monitor_workarea)(int64 monitor, int* xpos, int* ypos, int* width, int* height) {
+	glfwGetMonitorWorkarea((GLFWmonitor*)monitor, xpos, ypos, width, height);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_monitor_physical_size)(GLFWmonitor* monitor, int* widthMM, int* heightMM) {
-	glfwGetMonitorPhysicalSize(monitor, widthMM, heightMM);
+HL_PRIM void FUNC_NAME(glfw_get_monitor_physical_size)(int64 monitor, int* widthMM, int* heightMM) {
+	glfwGetMonitorPhysicalSize((GLFWmonitor*)monitor, widthMM, heightMM);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_monitor_content_scale)(GLFWmonitor* monitor, float* xscale, float* yscale) {
-	glfwGetMonitorContentScale(monitor, xscale, yscale);
+HL_PRIM void FUNC_NAME(glfw_get_monitor_content_scale)(int64 monitor, float* xscale, float* yscale) {
+	glfwGetMonitorContentScale((GLFWmonitor*)monitor, xscale, yscale);
 }
 
-HL_PRIM const vbyte* FUNC_NAME(glfw_get_monitor_name)(GLFWmonitor* monitor) {
-	return glfwGetMonitorName(monitor);
+HL_PRIM const vbyte* FUNC_NAME(glfw_get_monitor_name)(int64 monitor) {
+	return glfwGetMonitorName((GLFWmonitor*)monitor);
 }
 
 
@@ -202,28 +211,28 @@ DEFINE_PRIM(_BYTES, PRIM_NAME(glfw_get_monitor_name), _MONITOR);
 //// window stuff																	  ////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-HL_PRIM GLFWwindow* FUNC_NAME(glfw_create_window)(int width, int height, vstring* title, GLFWmonitor* monitor, GLFWwindow* share) {
-	return glfwCreateWindow(width, height, (const char*)hl_to_utf8(title->bytes), monitor, share);
+HL_PRIM int64 FUNC_NAME(glfw_create_window)(int width, int height, vstring* title, int64 monitor, int64 share) {
+	return (int64)&*glfwCreateWindow(width, height, (const char*)hl_to_utf8(title->bytes), (GLFWmonitor*)monitor, (GLFWwindow*)share);
 }
 
-HL_PRIM void FUNC_NAME(glfw_destroy_window)(GLFWwindow* window) {
-	glfwDestroyWindow(window);
+HL_PRIM void FUNC_NAME(glfw_destroy_window)(int64 window) {
+	glfwDestroyWindow((GLFWwindow*)window);
 }
 
-HL_PRIM int FUNC_NAME(glfw_window_should_close)(GLFWwindow* window) {
-	return glfwWindowShouldClose(window);
+HL_PRIM int FUNC_NAME(glfw_window_should_close)(int64 window) {
+	return glfwWindowShouldClose((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_should_close)(GLFWwindow* window, int value) {
-	glfwSetWindowShouldClose(window, value);
+HL_PRIM void FUNC_NAME(glfw_set_window_should_close)(int64 window, int value) {
+	glfwSetWindowShouldClose((GLFWwindow*)window, value);
 }
 
-HL_PRIM const vbyte* FUNC_NAME(glfw_get_window_title)(GLFWwindow* window) {
-	return glfwGetWindowTitle(window);
+HL_PRIM const vbyte* FUNC_NAME(glfw_get_window_title)(int64 window) {
+	return glfwGetWindowTitle((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_title)(GLFWwindow* window, vstring* title) {
-	glfwSetWindowTitle(window, (const char*)hl_to_utf8(title->bytes));
+HL_PRIM void FUNC_NAME(glfw_set_window_title)(int64 window, vstring* title) {
+	glfwSetWindowTitle((GLFWwindow*)window, (const char*)hl_to_utf8(title->bytes));
 }
 
 /* same with custom cursor code
@@ -232,120 +241,122 @@ HL_PRIM void FUNC_NAME(glfw_set_window_icon)(GLFWwindow* window, int count, cons
 }
 */
 
-HL_PRIM void FUNC_NAME(glfw_get_window_pos)(GLFWwindow* window, int* xpos, int* ypos) {
-	glfwGetWindowPos(window, xpos, ypos);
+HL_PRIM void FUNC_NAME(glfw_get_window_pos)(int64 window, int* xpos, int* ypos) {
+	glfwGetWindowPos((GLFWwindow*)window, xpos, ypos);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_pos)(GLFWwindow* window, int xpos, int ypos) {
-	glfwSetWindowPos(window, xpos, ypos);
+HL_PRIM void FUNC_NAME(glfw_set_window_pos)(int64 window, int xpos, int ypos) {
+	glfwSetWindowPos((GLFWwindow*)window, xpos, ypos);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_window_size)(GLFWwindow* window, int* width, int* height) {
-	glfwGetWindowSize(window, width, height);
+HL_PRIM void FUNC_NAME(glfw_get_window_size)(int64 window, int* width, int* height) {
+	glfwGetWindowSize((GLFWwindow*)window, width, height);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_size_limits)(GLFWwindow* window, int minwidth, int minheight, int maxwidth, int maxheight) {
-	glfwSetWindowSizeLimits(window, minwidth, minheight, maxwidth, maxheight);
+HL_PRIM void FUNC_NAME(glfw_set_window_size_limits)(int64 window, int minwidth, int minheight, int maxwidth, int maxheight) {
+	glfwSetWindowSizeLimits((GLFWwindow*)window, minwidth, minheight, maxwidth, maxheight);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_aspect_ratio)(GLFWwindow* window, int numer, int denom) {
-	glfwSetWindowAspectRatio(window, numer, denom);
+HL_PRIM void FUNC_NAME(glfw_set_window_aspect_ratio)(int64* window, int numer, int denom) {
+	glfwSetWindowAspectRatio((GLFWwindow*)window, numer, denom);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_size)(GLFWwindow* window, int width, int height) {
-	glfwSetWindowSize(window, width, height);
+HL_PRIM void FUNC_NAME(glfw_set_window_size)(int64 window, int width, int height) {
+	glfwSetWindowSize((GLFWwindow*)window, width, height);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_framebuffer_size)(GLFWwindow* window, int* width, int* height) {
-	glfwGetFramebufferSize(window, width, height);
+HL_PRIM void FUNC_NAME(glfw_get_framebuffer_size)(int64 window, int* width, int* height) {
+	glfwGetFramebufferSize((GLFWwindow*)window, width, height);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_window_frame_size)(GLFWwindow* window, int* left, int* top, int* right, int* bottom) {
-	glfwGetWindowFrameSize(window, left, top, right, bottom);
+HL_PRIM void FUNC_NAME(glfw_get_window_frame_size)(int64 window, int* left, int* top, int* right, int* bottom) {
+	glfwGetWindowFrameSize((GLFWwindow*)window, left, top, right, bottom);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_window_content_scale)(GLFWwindow* window, float* xscale, float* yscale) {
-	glfwGetWindowContentScale(window, xscale, yscale);
+HL_PRIM void FUNC_NAME(glfw_get_window_content_scale)(int64 window, float* xscale, float* yscale) {
+	glfwGetWindowContentScale((GLFWwindow*)window, xscale, yscale);
 }
 
-HL_PRIM float FUNC_NAME(glfw_get_window_opacity)(GLFWwindow* window) {
-	return glfwGetWindowOpacity(window);
+HL_PRIM float FUNC_NAME(glfw_get_window_opacity)(int64 window) {
+	return glfwGetWindowOpacity((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_opacity)(GLFWwindow* window, float opacity) {
-	glfwSetWindowOpacity(window, opacity);
+HL_PRIM void FUNC_NAME(glfw_set_window_opacity)(int64 window, float opacity) {
+	glfwSetWindowOpacity((GLFWwindow*)window, opacity);
 }
 
-HL_PRIM void FUNC_NAME(glfw_iconify_window)(GLFWwindow* window) {
-	glfwIconifyWindow(window);
+HL_PRIM void FUNC_NAME(glfw_iconify_window)(int64 window) {
+	glfwIconifyWindow((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_restore_window)(GLFWwindow* window) {
-	glfwRestoreWindow(window);
+HL_PRIM void FUNC_NAME(glfw_restore_window)(int64 window) {
+	glfwRestoreWindow((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_maximize_window)(GLFWwindow* window) {
-	glfwMaximizeWindow(window);
+HL_PRIM void FUNC_NAME(glfw_maximize_window)(int64* window) {
+	glfwMaximizeWindow((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_show_window)(GLFWwindow* window) {
-	glfwShowWindow(window);
+HL_PRIM void FUNC_NAME(glfw_show_window)(int64 window) {
+	glfwShowWindow((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_hide_window)(GLFWwindow* window) {
-	glfwHideWindow(window);
+HL_PRIM void FUNC_NAME(glfw_hide_window)(int64 window) {
+	glfwHideWindow((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_focus_window)(GLFWwindow* window) {
-	glfwFocusWindow(window);
+HL_PRIM void FUNC_NAME(glfw_focus_window)(int64 window) {
+	glfwFocusWindow((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_request_window_attention)(GLFWwindow* window) {
-	glfwRequestWindowAttention(window);
+HL_PRIM void FUNC_NAME(glfw_request_window_attention)(int64 window) {
+	glfwRequestWindowAttention((GLFWwindow*)window);
 }
 
-HL_PRIM GLFWmonitor* FUNC_NAME(glfw_get_window_monitor)(GLFWwindow* window) {
-	return glfwGetWindowMonitor(window);
+HL_PRIM int64 FUNC_NAME(glfw_get_window_monitor)(int64 window) {
+	GLFWmonitor* montor = glfwGetWindowMonitor((GLFWwindow*)window);
+	return (int64)&*montor;
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_monitor)(GLFWwindow* window, GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate) {
-	glfwSetWindowMonitor(window, monitor, xpos, ypos, width, height, refreshRate);
+HL_PRIM void FUNC_NAME(glfw_set_window_monitor)(int64 window, int64 monitor, int xpos, int ypos, int width, int height, int refreshRate) {
+	glfwSetWindowMonitor((GLFWwindow*)window, (GLFWmonitor*)monitor, xpos, ypos, width, height, refreshRate);
 }
 
-HL_PRIM int FUNC_NAME(glfw_get_window_attrib)(GLFWwindow* window, int attrib) {
-	return glfwGetWindowAttrib(window, attrib);
+HL_PRIM int FUNC_NAME(glfw_get_window_attrib)(int64 window, int attrib) {
+	return glfwGetWindowAttrib((GLFWwindow*)window, attrib);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_attrib)(GLFWwindow* window, int attrib, int value) {
-	glfwSetWindowAttrib(window, attrib, value);
+HL_PRIM void FUNC_NAME(glfw_set_window_attrib)(int64 window, int attrib, int value) {
+	glfwSetWindowAttrib((GLFWwindow*)window, attrib, value);
 }
 
-HL_PRIM int FUNC_NAME(glfw_get_input_mode)(GLFWwindow* window, int mode) {
-	return glfwGetInputMode(window, mode);
+HL_PRIM int FUNC_NAME(glfw_get_input_mode)(int64 window, int mode) {
+	return glfwGetInputMode((GLFWwindow*)window, mode);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_input_mode)(GLFWwindow* window, int mode, int value) {
-	glfwSetInputMode(window, mode, value);
+HL_PRIM void FUNC_NAME(glfw_set_input_mode)(int64 window, int mode, int value) {
+	glfwSetInputMode((GLFWwindow*)window, mode, value);
 }
 
-HL_PRIM void FUNC_NAME(glfw_make_context_current)(GLFWwindow* window) {
-	glfwMakeContextCurrent(window);
+HL_PRIM void FUNC_NAME(glfw_make_context_current)(int64 window) {
+	glfwMakeContextCurrent((GLFWwindow*)window);
 }
 
-HL_PRIM GLFWwindow* FUNC_NAME(glfw_get_current_context)() {
-	return glfwGetCurrentContext();
+HL_PRIM int64 FUNC_NAME(glfw_get_current_context)() {
+	GLFWwindow* wimndow = glfwGetCurrentContext();
+	return (int64)&*wimndow;
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_clipboard_string)(GLFWwindow* window, vstring* string) {
-	glfwSetClipboardString(window, (const char*)hl_to_utf8(string->bytes));
+HL_PRIM void FUNC_NAME(glfw_set_clipboard_string)(int64 window, vstring* string) {
+	glfwSetClipboardString((GLFWwindow*)window, (const char*)hl_to_utf8(string->bytes));
 }
 
-HL_PRIM const vbyte* FUNC_NAME(glfw_get_clipboard_string)(GLFWwindow* window) {
-	return glfwGetClipboardString(window);
+HL_PRIM const vbyte* FUNC_NAME(glfw_get_clipboard_string)(int64 window) {
+	return glfwGetClipboardString((GLFWwindow*)window);
 }
 
-HL_PRIM void FUNC_NAME(glfw_swap_buffers)(GLFWwindow* window) {
-	glfwSwapBuffers(window);
+HL_PRIM void FUNC_NAME(glfw_swap_buffers)(int64 window) {
+	glfwSwapBuffers((GLFWwindow*)window);
 }
 
 
@@ -410,24 +421,24 @@ HL_PRIM void FUNC_NAME(glfw_destroy_cursor)(GLFWcursor* cursor) {
 	glfwDestroyCursor(cursor);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_cursor)(GLFWwindow* window, GLFWcursor* cursor) {
-	glfwSetCursor(window, cursor);
+HL_PRIM void FUNC_NAME(glfw_set_cursor)(int64 window, GLFWcursor* cursor) {
+	glfwSetCursor((GLFWwindow*)window, cursor);
 }
 
 HL_PRIM int FUNC_NAME(glfw_raw_mouse_motion_supported)() {
 	return glfwRawMouseMotionSupported();
 }
 
-HL_PRIM int FUNC_NAME(glfw_get_mouse_button)(GLFWwindow* window, int button) {
-	return glfwGetMouseButton(window, button);
+HL_PRIM int FUNC_NAME(glfw_get_mouse_button)(int64 window, int button) {
+	return glfwGetMouseButton((GLFWwindow*)window, button);
 }
 
-HL_PRIM void FUNC_NAME(glfw_get_cursor_pos)(GLFWwindow* window, double* xpos, double* ypos) {
-	glfwGetCursorPos(window, xpos, ypos);
+HL_PRIM void FUNC_NAME(glfw_get_cursor_pos)(int64 window, double* xpos, double* ypos) {
+	glfwGetCursorPos((GLFWwindow*)window, xpos, ypos);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_cursor_pos)(GLFWwindow* window, double xpos, double ypos) {
-	glfwSetCursorPos(window, xpos, ypos);
+HL_PRIM void FUNC_NAME(glfw_set_cursor_pos)(int64 window, double xpos, double ypos) {
+	glfwSetCursorPos((GLFWwindow*)window, xpos, ypos);
 }
 
 
@@ -451,8 +462,8 @@ HL_PRIM int FUNC_NAME(glfw_get_key_scancode)(int key) {
 	return glfwGetKeyScancode(key);
 }
 
-HL_PRIM int FUNC_NAME(glfw_get_key)(GLFWwindow* window, int key) {
-	return glfwGetKey(window, key);
+HL_PRIM int FUNC_NAME(glfw_get_key)(int64 window, int key) {
+	return glfwGetKey((GLFWwindow*)window, key);
 }
 
 
@@ -577,6 +588,7 @@ DEFINE_PRIM(_VOID, PRIM_NAME(glfw_get_gamepad_state), _I32 _DYN);
 
 
 #define CREATE_CLOSURE_PARAM_INT(varName, value) CREATE_CLOSURE_PARAM(varName, value, hlt_i32, i)
+#define CREATE_CLOSURE_PARAM_INTSIXTYFOUR(varName, value) CREATE_CLOSURE_PARAM(varName, value, hlt_i64, i64)
 #define CREATE_CLOSURE_PARAM_FLOAT(varName, value) CREATE_CLOSURE_PARAM(varName, value, hlt_f32, f)
 #define CREATE_CLOSURE_PARAM_DOUBLE(varName, value) CREATE_CLOSURE_PARAM(varName, value, hlt_f64, d)
 #define CREATE_CLOSURE_PARAM_BYTES(varName, value) CREATE_CLOSURE_PARAM(varName, value, hlt_bytes, bytes)
@@ -600,7 +612,7 @@ DEFINE_PRIM(_VOID, PRIM_NAME(glfw_set_error_callback), _FUN(_VOID, _I32 _BYTES))
 
 static vclosure* windowMoveFunction;
 static void windowMoveCallback(GLFWwindow* window, int xpos, int ypos) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, xpos);
 	CREATE_CLOSURE_PARAM_INT(arg3, ypos);
 
@@ -608,15 +620,15 @@ static void windowMoveCallback(GLFWwindow* window, int xpos, int ypos) {
 	hl_dyn_call(windowMoveFunction, args, 3);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_pos_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_pos_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowMoveFunction)
-	glfwSetWindowPosCallback(window, windowMoveCallback);
+	glfwSetWindowPosCallback((GLFWwindow*)window, windowMoveCallback);
 }
 
 
 static vclosure* windowResizeFunction;
 static void windowResizeCallback(GLFWwindow* window, int width, int height) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, width);
 	CREATE_CLOSURE_PARAM_INT(arg3, height);
 
@@ -624,88 +636,88 @@ static void windowResizeCallback(GLFWwindow* window, int width, int height) {
 	hl_dyn_call(windowResizeFunction, args, 3);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_size_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_size_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowResizeFunction)
-	glfwSetWindowSizeCallback(window, windowResizeCallback);
+	glfwSetWindowSizeCallback((GLFWwindow*)window, windowResizeCallback);
 }
 
 
 static vclosure* windowCloseFunction;
 static void windowCloseCallback(GLFWwindow* window) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 
 	vdynamic* args[1] = { &arg };
 	hl_dyn_call(windowCloseFunction, args, 1);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_close_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_close_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowCloseFunction)
-	glfwSetWindowCloseCallback(window, windowCloseCallback);
+	glfwSetWindowCloseCallback((GLFWwindow*)window, windowCloseCallback);
 }
 
 
 static vclosure* windowRefreshFunction;
 static void windowRefreshCallback(GLFWwindow* window) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 
 	vdynamic* args[1] = { &arg };
 	hl_dyn_call(windowRefreshFunction, args, 1);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_refresh_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_refresh_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowRefreshFunction)
-	glfwSetWindowRefreshCallback(window, windowRefreshCallback);
+	glfwSetWindowRefreshCallback((GLFWwindow*)window, windowRefreshCallback);
 }
 
 
 static vclosure* windowFocusFunction;
 static void windowFocusCallback(GLFWwindow* window, int focused) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, focused);
 
 	vdynamic* args[2] = { &arg, &arg2 };
 	hl_dyn_call(windowFocusFunction, args, 2);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_focus_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_focus_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowFocusFunction)
-	glfwSetWindowFocusCallback(window, windowFocusCallback);
+	glfwSetWindowFocusCallback((GLFWwindow*)window, windowFocusCallback);
 }
 
 
 static vclosure* windowIconifyFunction;
 static void windowIconifyCallback(GLFWwindow* window, int iconified) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, iconified);
 
 	vdynamic* args[2] = { &arg, &arg2 };
 	hl_dyn_call(windowIconifyFunction, args, 2);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_iconify_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_iconify_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowIconifyFunction)
-	glfwSetWindowIconifyCallback(window, windowIconifyCallback);
+	glfwSetWindowIconifyCallback((GLFWwindow*)window, windowIconifyCallback);
 }
 
 
 static vclosure* windowMaximizeFunction;
 static void windowMaximizeCallback(GLFWwindow* window, int maximized) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, maximized);
 
 	vdynamic* args[2] = { &arg, &arg2 };
 	hl_dyn_call(windowMaximizeFunction, args, 2);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_maximize_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_maximize_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowMaximizeFunction)
-	glfwSetWindowMaximizeCallback(window, windowMaximizeCallback);
+	glfwSetWindowMaximizeCallback((GLFWwindow*)window, windowMaximizeCallback);
 }
 
 
 static vclosure* windowFramebufferFunction;
 static void windowFramebufferCallback(GLFWwindow* window, int width, int height) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, width);
 	CREATE_CLOSURE_PARAM_INT(arg3, height);
 
@@ -713,15 +725,15 @@ static void windowFramebufferCallback(GLFWwindow* window, int width, int height)
 	hl_dyn_call(windowFramebufferFunction, args, 3);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_framebuffer_size_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_framebuffer_size_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowFramebufferFunction)
-	glfwSetFramebufferSizeCallback(window, windowFramebufferCallback);
+	glfwSetFramebufferSizeCallback((GLFWwindow*)window, windowFramebufferCallback);
 }
 
 
 static vclosure* windowContentFunction;
 static void windowContentCallback(GLFWwindow* window, float xscale, float yscale) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_FLOAT(arg2, xscale);
 	CREATE_CLOSURE_PARAM_FLOAT(arg3, yscale);
 
@@ -729,14 +741,14 @@ static void windowContentCallback(GLFWwindow* window, float xscale, float yscale
 	hl_dyn_call(windowContentFunction, args, 3);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_window_content_scale_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_window_content_scale_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowContentFunction)
-	glfwSetWindowContentScaleCallback(window, windowContentCallback);
+	glfwSetWindowContentScaleCallback((GLFWwindow*)window, windowContentCallback);
 }
 
 static vclosure* monitorFunction;
 static void monitorCallback(GLFWmonitor* monitor, int event) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, monitor);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*monitor);
 	CREATE_CLOSURE_PARAM_INT(arg2, event);
 
 	vdynamic* args[2] = { &arg, &arg2 };
@@ -750,7 +762,7 @@ HL_PRIM void FUNC_NAME(glfw_set_monitor_callback)(vclosure* callback) {
 
 static vclosure* windowKeyFunction;
 static void windowKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, key);
 	CREATE_CLOSURE_PARAM_INT(arg3, scancode);
 	CREATE_CLOSURE_PARAM_INT(arg4, action);
@@ -760,9 +772,9 @@ static void windowKeyCallback(GLFWwindow* window, int key, int scancode, int act
 	hl_dyn_call(windowKeyFunction, args, 5);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_key_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_key_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowKeyFunction)
-	glfwSetKeyCallback(window, windowKeyCallback);
+	glfwSetKeyCallback((GLFWwindow*)window, windowKeyCallback);
 }
 
 /* planned to be removed so there isnt really a point to add this
@@ -797,7 +809,7 @@ HL_PRIM GLFWcharmodsfun FUNC_NAME(glfw_set_char_mods_callback)(GLFWwindow* windo
 
 static vclosure* windowMouseButtonFunction;
 static void windowMouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, button);
 	CREATE_CLOSURE_PARAM_INT(arg3, action);
 	CREATE_CLOSURE_PARAM_INT(arg4, mods);
@@ -806,14 +818,14 @@ static void windowMouseButtonCallback(GLFWwindow* window, int button, int action
 	hl_dyn_call(windowMouseButtonFunction, args, 4);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_mouse_button_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_mouse_button_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowMouseButtonFunction)
-	glfwSetMouseButtonCallback(window, windowMouseButtonCallback);
+	glfwSetMouseButtonCallback((GLFWwindow*)window, windowMouseButtonCallback);
 }
 
 static vclosure* windowCursorPosFunction;
 static void windowCursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_DOUBLE(arg2, xpos);
 	CREATE_CLOSURE_PARAM_DOUBLE(arg3, ypos);
 
@@ -821,28 +833,28 @@ static void windowCursorPosCallback(GLFWwindow* window, double xpos, double ypos
 	hl_dyn_call(windowCursorPosFunction, args, 3);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_cursor_pos_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_cursor_pos_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowCursorPosFunction)
-	glfwSetCursorPosCallback(window, windowCursorPosCallback);
+	glfwSetCursorPosCallback((GLFWwindow*)window, windowCursorPosCallback);
 }
 
 static vclosure* windowCursorEnterFunction;
 static void windowCursorEnterCallback(GLFWwindow* window, int entered) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_INT(arg2, entered);
 
 	vdynamic* args[2] = { &arg, &arg2 };
 	hl_dyn_call(windowCursorEnterFunction, args, 2);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_cursor_enter_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_cursor_enter_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowCursorEnterFunction)
-	glfwSetCursorEnterCallback(window, windowCursorEnterCallback);
+	glfwSetCursorEnterCallback((GLFWwindow*)window, windowCursorEnterCallback);
 }
 
 static vclosure* windowScrollFunction;
 static void windowScrollCallback(GLFWwindow* window, double xoff, double yoff) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	CREATE_CLOSURE_PARAM_DOUBLE(arg2, xoff);
 	CREATE_CLOSURE_PARAM_DOUBLE(arg3, yoff);
 
@@ -850,14 +862,14 @@ static void windowScrollCallback(GLFWwindow* window, double xoff, double yoff) {
 	hl_dyn_call(windowScrollFunction, args, 3);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_scroll_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_scroll_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowScrollFunction)
-	glfwSetScrollCallback(window, windowScrollCallback);
+	glfwSetScrollCallback((GLFWwindow*)window, windowScrollCallback);
 }
 
 static vclosure* windowDropFunction;
 static void windowDropCallback(GLFWwindow* window, int path_count, const char* paths[]) {
-	CREATE_CLOSURE_PARAM_ABSTRACT(arg, window);
+	CREATE_CLOSURE_PARAM_INTSIXTYFOUR(arg, (int64)&*window);
 	varray* arr = hl_alloc_array(&hlt_bytes, path_count);
 
 	for (int i = 0; i < path_count; ++i) {
@@ -869,9 +881,9 @@ static void windowDropCallback(GLFWwindow* window, int path_count, const char* p
 	hl_dyn_call(windowDropFunction, args, 2);
 }
 
-HL_PRIM void FUNC_NAME(glfw_set_drop_callback)(GLFWwindow* window, vclosure* callback) {
+HL_PRIM void FUNC_NAME(glfw_set_drop_callback)(int64 window, vclosure* callback) {
 	GENERATE_CLOSURE_OVERRIDE(windowDropFunction)
-	glfwSetDropCallback(window, windowDropCallback);
+	glfwSetDropCallback((GLFWwindow*)window, windowDropCallback);
 }
 
 static vclosure* joystickFunction;

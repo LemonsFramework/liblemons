@@ -44,13 +44,14 @@ static void onDebugData(GLenum source, GLenum type, GLuint id, GLenum severity, 
 }
 
 HL_PRIM int FUNC_NAME(glad_load_gl)() {
-	return gladLoadGL(glfwGetProcAddress);
+	int proc = gladLoadGL(glfwGetProcAddress);
+	return proc;
 }
 
 DEFINE_PRIM(_I32, PRIM_NAME(glad_load_gl), _NO_ARG);
 
 HL_PRIM int FUNC_NAME(gl_gen_buffers)() {
-	GLuint buf;
+	GLuint buf = 0;
 	glGenBuffers(1, &buf);
 	return buf;
 }
@@ -76,7 +77,7 @@ HL_PRIM int FUNC_NAME(gl_gen_queries)() {
 HL_PRIM int FUNC_NAME(gl_gen_renderbuffers)() {
 	GLuint rend;
 	glGenRenderbuffers(1, &rend);
-	return queer;
+	return rend;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_samplers)() {

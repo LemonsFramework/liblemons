@@ -44,8 +44,7 @@ static void onDebugData(GLenum source, GLenum type, GLuint id, GLenum severity, 
 }
 
 HL_PRIM int FUNC_NAME(glad_load_gl)() {
-	int proc = gladLoadGL(glfwGetProcAddress);
-	return proc;
+	return gladLoadGL(glfwGetProcAddress);
 }
 
 DEFINE_PRIM(_I32, PRIM_NAME(glad_load_gl), _NO_ARG);
@@ -57,49 +56,49 @@ HL_PRIM int FUNC_NAME(gl_gen_buffers)() {
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_framebuffers)() {
-	GLuint buf;
+	GLuint buf = 0;
 	glGenFramebuffers(1, &buf);
 	return buf;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_program_pipelines)() {
-	GLuint pipe;
+	GLuint pipe = 0;
 	glGenProgramPipelines(1, &pipe);
 	return pipe;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_queries)() {
-	GLuint queer;
+	GLuint queer = 0;
 	glGenQueries(1, &queer);
 	return queer;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_renderbuffers)() {
-	GLuint rend;
+	GLuint rend = 0;
 	glGenRenderbuffers(1, &rend);
 	return rend;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_samplers)() {
-	GLuint samplers;
+	GLuint samplers = 0;
 	glGenSamplers(1, &samplers);
 	return samplers;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_textures)() {
-	GLuint textures;
+	GLuint textures = 0;
 	glGenTextures(1, &textures);
 	return textures;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_transform_feedbacks)() {
-	GLuint ids;
+	GLuint ids = 0;
 	glGenTransformFeedbacks(1, &ids);
 	return ids;
 }
 
 HL_PRIM int FUNC_NAME(gl_gen_vertex_arrays)() {
-	GLuint arrays;
+	GLuint arrays = 0;
 	glGenVertexArrays(1, &arrays);
 	return arrays;
 }
@@ -120,6 +119,205 @@ DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_transform_feedbacks), _NO_ARG);
 DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_vertex_arrays), _NO_ARG);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_generate_mipmap), _I32);
 
+HL_PRIM void FUNC_NAME(gl_shader_source)(GLuint shader, vstring* string) {
+	char* gay = hl_to_utf8(string->bytes);
+	return glShaderSource(shader, 1, &gay, NULL);
+}
+
+HL_PRIM void FUNC_NAME(gl_vertex_attrib_pointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, int offset) {
+	return glVertexAttribPointer(index, size, type, normalized, stride, (void*)(intptr_t)offset);
+}
+
+HL_PRIM void FUNC_NAME(gl_buffer_data)(GLenum target, int size, vbyte *data, GLenum usage) {
+	return glBufferData(target, size, data, usage);
+}
+
+HL_PRIM void FUNC_NAME(gl_draw_elements)(GLenum mode, GLsizei count, GLenum type, int start) {
+	return glDrawElements(mode, count, type, (void*)(intptr_t)start);
+}
+
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_shader_source), _I32 _STRING);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_attrib_pointer), _I32 _I32 _I32 _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_buffer_data), _I32 _I32 _BYTES _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_elements), _I32 _I32 _I32 _I32);
+
+HL_PRIM void FUNC_NAME(gl_uniform1d)(GLint location, GLdouble x) {
+	return glUniform1d(location, x);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform1f)(GLint location, GLfloat v0) {
+	return glUniform1f(location, v0);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform1i)(GLint location, GLint v0) {
+	return glUniform1i(location, v0);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform1ui)(GLint location, GLuint v0) {
+	return glUniform1ui(location, v0);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform2d)(GLint location, GLdouble x, GLdouble y) {
+	return glUniform2d(location, x, y);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform2f)(GLint location, GLfloat v0, GLfloat v1) {
+	return glUniform2f(location, v0, v1);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform2i)(GLint location, GLint v0, GLint v1) {
+	return glUniform2i(location, v0, v1);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform2ui)(GLint location, GLuint v0, GLuint v1) {
+	return glUniform2ui(location, v0, v1);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform3d)(GLint location, GLdouble x, GLdouble y, GLdouble z) {
+	return glUniform3d(location, x, y, z);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform3f)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2) {
+	return glUniform3f(location, v0, v1, v2);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform3i)(GLint location, GLint v0, GLint v1, GLint v2) {
+	return glUniform3i(location, v0, v1, v2);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform3ui)(GLint location, GLuint v0, GLuint v1, GLuint v2) {
+	return glUniform3ui(location, v0, v1, v2);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform4d)(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w) {
+	return glUniform4d(location, x, y, z, w);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform4f)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) {
+	return glUniform4f(location, v0, v1, v2, v3);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform4i)(GLint location, GLint v0, GLint v1, GLint v2, GLint v3) {
+	return glUniform4i(location, v0, v1, v2, v3);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform4ui)(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3) {
+	return glUniform4ui(location, v0, v1, v2, v3);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix2dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix2dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix2fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix2fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix2x3dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix2x3dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix2x3fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix2x3fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix2x4dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix2x4dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix2x4fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix2x4fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix3dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix3dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix3fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix3fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix3x2dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix3x2dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix3x2fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix3x2fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix3x4dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix3x4dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix3x4fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix3x4fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix4dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix4dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix4fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix4fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix4x2dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix4x2dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix4x2fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix4x2fv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix4x3dv(location, count, transpose, value);
+}
+
+HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
+	return glUniformMatrix4x3fv(location, count, transpose, value);
+}
+
+HL_PRIM GLint FUNC_NAME(gl_get_uniform_location)(GLuint program, vstring *name) {
+	char* gay = hl_to_utf8(name->bytes);
+	return glGetUniformLocation(program, gay);
+}
+
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1d), _I32 _F64);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1f), _I32 _F32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1i), _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1ui), _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2d), _I32 _F64 _F64);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2f), _I32 _F32 _F32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2i), _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2ui), _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3d), _I32 _F64 _F64 _F64);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3f), _I32 _F32 _F32 _F32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3i), _I32 _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3ui), _I32 _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4d), _I32 _F64 _F64 _F64 _F64);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4f), _I32 _F32 _F32 _F32 _F32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4i), _I32 _I32 _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4ui), _I32 _I32 _I32 _I32 _I32);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x3dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x3fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x4dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x4fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x2dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x2fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x4dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x4fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x2dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x2fv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x3dv), _I32 _I32 _I32 _BYTES);
+DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x3fv), _I32 _I32 _I32 _BYTES);
+
+DEFINE_PRIM(_I32, PRIM_NAME(gl_get_uniform_location), _I32 _STRING);
 
 
 HL_PRIM void FUNC_NAME(gl_active_shader_program)(GLuint pipeline, GLuint program) {
@@ -272,10 +470,6 @@ HL_PRIM void FUNC_NAME(gl_blend_funci)(GLuint buf, GLenum src, GLenum dst) {
 
 HL_PRIM void FUNC_NAME(gl_blit_framebuffer)(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) {
 	return glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
-}
-
-HL_PRIM void FUNC_NAME(gl_buffer_data)(GLenum target, GLsizeiptr size, vbyte *data, GLenum usage) {
-	return glBufferData(target, size, data, usage);
 }
 
 HL_PRIM void FUNC_NAME(gl_buffer_storage)(GLenum target, GLsizeiptr size, vbyte *data, GLbitfield flags) {
@@ -578,10 +772,6 @@ HL_PRIM void FUNC_NAME(gl_draw_buffer)(GLenum buf) {
 
 HL_PRIM void FUNC_NAME(gl_draw_buffers)(GLsizei n, GLenum *bufs) {
 	return glDrawBuffers(n, bufs);
-}
-
-HL_PRIM void FUNC_NAME(gl_draw_elements)(GLenum mode, GLsizei count, GLenum type, vbyte *indices) {
-	return glDrawElements(mode, count, type, indices);
 }
 
 HL_PRIM void FUNC_NAME(gl_draw_elements_base_vertex)(GLenum mode, GLsizei count, GLenum type, vbyte *indices, GLint basevertex) {
@@ -1030,10 +1220,6 @@ HL_PRIM GLuint FUNC_NAME(gl_get_uniform_block_index)(GLuint program, vstring *un
 
 HL_PRIM void FUNC_NAME(gl_get_uniform_indices)(GLuint program, GLsizei uniformCount, varray *uniformNames, GLuint *uniformIndices) {
 	return glGetUniformIndices(program, uniformCount, hl_aptr(uniformNames, GLchar *), uniformIndices);
-}
-
-HL_PRIM GLint FUNC_NAME(gl_get_uniform_location)(GLuint program, vstring *name) {
-	return glGetUniformLocation(program, name->bytes);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniform_subroutineuiv)(GLenum shadertype, GLint location, GLuint *params) {
@@ -1624,10 +1810,6 @@ HL_PRIM void FUNC_NAME(gl_shader_binary)(GLsizei count, GLuint *shaders, GLenum 
 	return glShaderBinary(count, shaders, binaryFormat, binary, length);
 }
 
-HL_PRIM void FUNC_NAME(gl_shader_source)(GLuint shader, GLsizei count, varray *string, GLint *length) {
-	return glShaderSource(shader, count, hl_aptr(string, GLchar *), length);
-}
-
 HL_PRIM void FUNC_NAME(gl_shader_storage_block_binding)(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding) {
 	return glShaderStorageBlockBinding(program, storageBlockIndex, storageBlockBinding);
 }
@@ -1778,214 +1960,6 @@ HL_PRIM void FUNC_NAME(gl_texture_view)(GLuint texture, GLenum target, GLuint or
 
 HL_PRIM void FUNC_NAME(gl_transform_feedback_varyings)(GLuint program, GLsizei count, varray *varyings, GLenum bufferMode) {
 	return glTransformFeedbackVaryings(program, count, hl_aptr(varyings, GLchar *), bufferMode);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1d)(GLint location, GLdouble x) {
-	return glUniform1d(location, x);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1dv)(GLint location, GLsizei count, GLdouble *value) {
-	return glUniform1dv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1f)(GLint location, GLfloat v0) {
-	return glUniform1f(location, v0);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1fv)(GLint location, GLsizei count, GLfloat *value) {
-	return glUniform1fv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1i)(GLint location, GLint v0) {
-	return glUniform1i(location, v0);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1iv)(GLint location, GLsizei count, GLint *value) {
-	return glUniform1iv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1ui)(GLint location, GLuint v0) {
-	return glUniform1ui(location, v0);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform1uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform1uiv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2d)(GLint location, GLdouble x, GLdouble y) {
-	return glUniform2d(location, x, y);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2dv)(GLint location, GLsizei count, GLdouble *value) {
-	return glUniform2dv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2f)(GLint location, GLfloat v0, GLfloat v1) {
-	return glUniform2f(location, v0, v1);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2fv)(GLint location, GLsizei count, GLfloat *value) {
-	return glUniform2fv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2i)(GLint location, GLint v0, GLint v1) {
-	return glUniform2i(location, v0, v1);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2iv)(GLint location, GLsizei count, GLint *value) {
-	return glUniform2iv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2ui)(GLint location, GLuint v0, GLuint v1) {
-	return glUniform2ui(location, v0, v1);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform2uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform2uiv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3d)(GLint location, GLdouble x, GLdouble y, GLdouble z) {
-	return glUniform3d(location, x, y, z);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3dv)(GLint location, GLsizei count, GLdouble *value) {
-	return glUniform3dv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3f)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2) {
-	return glUniform3f(location, v0, v1, v2);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3fv)(GLint location, GLsizei count, GLfloat *value) {
-	return glUniform3fv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3i)(GLint location, GLint v0, GLint v1, GLint v2) {
-	return glUniform3i(location, v0, v1, v2);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3iv)(GLint location, GLsizei count, GLint *value) {
-	return glUniform3iv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3ui)(GLint location, GLuint v0, GLuint v1, GLuint v2) {
-	return glUniform3ui(location, v0, v1, v2);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform3uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform3uiv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4d)(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w) {
-	return glUniform4d(location, x, y, z, w);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4dv)(GLint location, GLsizei count, GLdouble *value) {
-	return glUniform4dv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4f)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) {
-	return glUniform4f(location, v0, v1, v2, v3);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4fv)(GLint location, GLsizei count, GLfloat *value) {
-	return glUniform4fv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4i)(GLint location, GLint v0, GLint v1, GLint v2, GLint v3) {
-	return glUniform4i(location, v0, v1, v2, v3);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4iv)(GLint location, GLsizei count, GLint *value) {
-	return glUniform4iv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4ui)(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3) {
-	return glUniform4ui(location, v0, v1, v2, v3);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform4uiv)(GLint location, GLsizei count, GLuint *value) {
-	return glUniform4uiv(location, count, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_block_binding)(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding) {
-	return glUniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix2dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix2dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix2fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix2fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix2x3dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix2x3dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix2x3fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix2x3fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix2x4dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix2x4dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix2x4fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix2x4fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix3dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix3dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix3fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix3fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix3x2dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix3x2dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix3x2fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix3x2fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix3x4dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix3x4dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix3x4fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix3x4fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix4dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix4dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix4fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix4fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix4x2dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix4x2dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix4x2fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix4x2fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3dv)(GLint location, GLsizei count, GLboolean transpose, GLdouble *value) {
-	return glUniformMatrix4x3dv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3fv)(GLint location, GLsizei count, GLboolean transpose, GLfloat *value) {
-	return glUniformMatrix4x3fv(location, count, transpose, value);
-}
-
-HL_PRIM void FUNC_NAME(gl_uniform_subroutinesuiv)(GLenum shadertype, GLsizei count, GLuint *indices) {
-	return glUniformSubroutinesuiv(shadertype, count, indices);
 }
 
 HL_PRIM GLboolean FUNC_NAME(gl_unmap_buffer)(GLenum target) {
@@ -2324,10 +2298,6 @@ HL_PRIM void FUNC_NAME(gl_vertex_attrib_p4uiv)(GLuint index, GLenum type, GLbool
 	return glVertexAttribP4uiv(index, type, normalized, value);
 }
 
-HL_PRIM void FUNC_NAME(gl_vertex_attrib_pointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, vbyte *pointer) {
-	return glVertexAttribPointer(index, size, type, normalized, stride, pointer);
-}
-
 HL_PRIM void FUNC_NAME(gl_vertex_binding_divisor)(GLuint bindingindex, GLuint divisor) {
 	return glVertexBindingDivisor(bindingindex, divisor);
 }
@@ -2414,7 +2384,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_blend_func_separate), _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_blend_func_separatei), _I32 _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_blend_funci), _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_blit_framebuffer), _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_buffer_data), _I32 _REF(_I32) _BYTES _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_buffer_storage), _I32 _REF(_I32) _BYTES _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_buffer_sub_data), _I32 _REF(_I32) _REF(_I32) _BYTES);
 DEFINE_PRIM(_I32, PRIM_NAME(gl_check_framebuffer_status), _I32);
@@ -2490,7 +2459,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_arrays_instanced), _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_arrays_instanced_base_instance), _I32 _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_buffer), _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_buffers), _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_elements), _I32 _I32 _I32 _BYTES);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_elements_base_vertex), _I32 _I32 _I32 _BYTES _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_elements_indirect), _I32 _I32 _BYTES);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_draw_elements_instanced), _I32 _I32 _I32 _BYTES _I32);
@@ -2603,7 +2571,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_tex_parameteriv), _I32 _I32 _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_transform_feedback_varying), _I32 _I32 _I32 _REF(_I32) _REF(_I32) _REF(_I32) _STRING);
 DEFINE_PRIM(_I32, PRIM_NAME(gl_get_uniform_block_index), _I32 _STRING);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_uniform_indices), _I32 _I32 _ARR _REF(_I32));
-DEFINE_PRIM(_I32, PRIM_NAME(gl_get_uniform_location), _I32 _STRING);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_uniform_subroutineuiv), _I32 _I32 _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_uniformdv), _I32 _I32 _REF(_F64));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_get_uniformfv), _I32 _I32 _REF(_F32));
@@ -2751,7 +2718,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_scissor_indexedv), _I32 _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_secondary_color_p3ui), _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_secondary_color_p3uiv), _I32 _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_shader_binary), _I32 _REF(_I32) _I32 _BYTES _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_shader_source), _I32 _I32 _ARR _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_shader_storage_block_binding), _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_stencil_func), _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_stencil_func_separate), _I32 _I32 _I32 _I32);
@@ -2790,58 +2756,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_tex_sub_image2_d), _I32 _I32 _I32 _I32 _I32 _I32
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_tex_sub_image3_d), _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32 _BYTES);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_texture_view), _I32 _I32 _I32 _I32 _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_transform_feedback_varyings), _I32 _I32 _ARR _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1d), _I32 _F64);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1dv), _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1f), _I32 _F32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1fv), _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1i), _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1iv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1ui), _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform1uiv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2d), _I32 _F64 _F64);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2dv), _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2f), _I32 _F32 _F32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2fv), _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2i), _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2iv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2ui), _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform2uiv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3d), _I32 _F64 _F64 _F64);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3dv), _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3f), _I32 _F32 _F32 _F32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3fv), _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3i), _I32 _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3iv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3ui), _I32 _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform3uiv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4d), _I32 _F64 _F64 _F64 _F64);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4dv), _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4f), _I32 _F32 _F32 _F32 _F32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4fv), _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4i), _I32 _I32 _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4iv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4ui), _I32 _I32 _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform4uiv), _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_block_binding), _I32 _I32 _I32);
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x3dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x3fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x4dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix2x4fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x2dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x2fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x4dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix3x4fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x2dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x2fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x3dv), _I32 _I32 _I32 _REF(_F64));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_matrix4x3fv), _I32 _I32 _I32 _REF(_F32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_uniform_subroutinesuiv), _I32 _I32 _REF(_I32));
 DEFINE_PRIM(_I32, PRIM_NAME(gl_unmap_buffer), _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_use_program), _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_use_program_stages), _I32 _I32 _I32);
@@ -2926,7 +2840,6 @@ DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_attrib_p3ui), _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_attrib_p3uiv), _I32 _I32 _I32 _REF(_I32));
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_attrib_p4ui), _I32 _I32 _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_attrib_p4uiv), _I32 _I32 _I32 _REF(_I32));
-DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_attrib_pointer), _I32 _I32 _I32 _I32 _I32 _BYTES);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_binding_divisor), _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_p2ui), _I32 _I32);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_vertex_p2uiv), _I32 _REF(_I32));

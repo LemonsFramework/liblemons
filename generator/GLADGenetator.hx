@@ -6,7 +6,7 @@ import sys.io.File.getContent;
 
 using StringTools;
 
-typedef Thingy = {name:String, defineName:String, ?appendFile:String, output:String, xmlName:String, haxeName:String, lightColor:Int, darkColor:Int, features:Array<String>, ?exclude:EReg}
+typedef Thingy = {name:String, defineName:String, ?appendFile:String, output:String, xmlName:String, haxeName:String, lightColor:Int, darkColor:Int, features:Array<String>, ?exclude:Array<String>, ?excludeReg:Array<EReg>}
 
 class GLADGenetator {
 	final typeMap:Map<String, String> = [
@@ -178,7 +178,7 @@ class GLADGenetator {
 			'GL_VERSION_4_2', 
 			'GL_VERSION_4_3', 
 			'GL_VERSION_4_4'
-		], appendFile: 'glInclude', haxeName: 'OpenGL', defineName: 'GLAD_GL_IMPLEMENTATION', exclude: ~/\bglGen\w*\b/},
+		], appendFile: 'glInclude', haxeName: 'OpenGL', defineName: 'GLAD_GL_IMPLEMENTATION', exclude: ['glBufferData', 'glDrawElements', 'glShaderSource', 'glVertexAttribPointer', 'glGetUniformLocation'], excludeReg: [~/\bglGen\w*\b/, ~/\bglUniform\w*\b/]},
 		// will do later when im not lazy
 		// {name: 'vulkan', output: 'out/vulkan', xmlName: 'vk.xml', lightColor: 91, darkColor: 31, features: [
 		// 	'VK_VERSION_1_0',
@@ -264,7 +264,8 @@ class GLADGenetator {
 			var proto = command.elementsNamed('proto').next();
 			var name = proto.elementsNamed('name').next().firstChild().nodeValue;
 
-			if (!requiredFunctions.contains(name) || data.exclude.match(name)) continue;
+			var exclude:Bool = [for (reg in data.excludeReg) reg.match(name)].contains(true);
+			if (!requiredFunctions.contains(name) || exclude || data.exclude.contains(name)) continue;
 
 			var jaxeReturn:String = '';
 			var typeThing:StringBuf = new StringBuf();

@@ -120,20 +120,20 @@ DEFINE_PRIM(_I32, PRIM_NAME(gl_gen_vertex_arrays), _NO_ARG);
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_generate_mipmap), _I32);
 
 HL_PRIM void FUNC_NAME(gl_shader_source)(GLuint shader, vstring* string) {
-	char* gay = hl_to_utf8(string->bytes);
+	const char* gay = hl_to_utf8(string->bytes);
 	return glShaderSource(shader, 1, &gay, NULL);
 }
 
 HL_PRIM void FUNC_NAME(gl_vertex_attrib_pointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, int offset) {
-	return glVertexAttribPointer(index, size, type, normalized, stride, (void*)(intptr_t)offset);
+	return glVertexAttribPointer(index, size, type, normalized, stride, (void*)offset);
 }
 
 HL_PRIM void FUNC_NAME(gl_buffer_data)(GLenum target, int size, vbyte *data, GLenum usage) {
-	return glBufferData(target, size, data, usage);
+	return glBufferData(target, size, data, usage);	
 }
 
 HL_PRIM void FUNC_NAME(gl_draw_elements)(GLenum mode, GLsizei count, GLenum type, int start) {
-	return glDrawElements(mode, count, type, (void*)(intptr_t)start);
+	return glDrawElements(mode, count, type, (void*)start);
 }
 
 DEFINE_PRIM(_VOID, PRIM_NAME(gl_shader_source), _I32 _STRING);
@@ -206,75 +206,75 @@ HL_PRIM void FUNC_NAME(gl_uniform4ui)(GLint location, GLuint v0, GLuint v1, GLui
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix2dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix2dv(location, count, transpose, value);
+	return glUniformMatrix2dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix2fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix2fv(location, count, transpose, value);
+	return glUniformMatrix2fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix2x3dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix2x3dv(location, count, transpose, value);
+	return glUniformMatrix2x3dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix2x3fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix2x3fv(location, count, transpose, value);
+	return glUniformMatrix2x3fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix2x4dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix2x4dv(location, count, transpose, value);
+	return glUniformMatrix2x4dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix2x4fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix2x4fv(location, count, transpose, value);
+	return glUniformMatrix2x4fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix3dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix3dv(location, count, transpose, value);
+	return glUniformMatrix3dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix3fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix3fv(location, count, transpose, value);
+	return glUniformMatrix3fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix3x2dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix3x2dv(location, count, transpose, value);
+	return glUniformMatrix3x2dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix3x2fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix3x2fv(location, count, transpose, value);
+	return glUniformMatrix3x2fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix3x4dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix3x4dv(location, count, transpose, value);
+	return glUniformMatrix3x4dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix3x4fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix3x4fv(location, count, transpose, value);
+	return glUniformMatrix3x4fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix4dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix4dv(location, count, transpose, value);
+	return glUniformMatrix4dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix4fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix4fv(location, count, transpose, value);
+	return glUniformMatrix4fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix4x2dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix4x2dv(location, count, transpose, value);
+	return glUniformMatrix4x2dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix4x2fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix4x2fv(location, count, transpose, value);
+	return glUniformMatrix4x2fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3dv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix4x3dv(location, count, transpose, value);
+	return glUniformMatrix4x3dv(location, count, transpose, hl_aptr(value, double));
 }
 
 HL_PRIM void FUNC_NAME(gl_uniform_matrix4x3fv)(GLint location, int count, GLboolean transpose, vbyte* value) {
-	return glUniformMatrix4x3fv(location, count, transpose, value);
+	return glUniformMatrix4x3fv(location, count, transpose, hl_aptr(value, float));
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_uniform_location)(GLuint program, vstring *name) {
@@ -349,7 +349,8 @@ HL_PRIM void FUNC_NAME(gl_begin_transform_feedback)(GLenum primitiveMode) {
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_attrib_location)(GLuint program, GLuint index, vstring *name) {
-	return glBindAttribLocation(program, index, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glBindAttribLocation(program, index, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_buffer)(GLenum target, GLuint buffer) {
@@ -373,11 +374,13 @@ HL_PRIM void FUNC_NAME(gl_bind_buffers_range)(GLenum target, GLuint first, GLsiz
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_frag_data_location)(GLuint program, GLuint color, vstring *name) {
-	return glBindFragDataLocation(program, color, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glBindFragDataLocation(program, color, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_frag_data_location_indexed)(GLuint program, GLuint colorNumber, GLuint index, vstring *name) {
-	return glBindFragDataLocationIndexed(program, colorNumber, index, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glBindFragDataLocationIndexed(program, colorNumber, index, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_bind_framebuffer)(GLenum target, GLuint framebuffer) {
@@ -633,7 +636,15 @@ HL_PRIM GLuint FUNC_NAME(gl_create_shader)(GLenum type) {
 }
 
 HL_PRIM GLuint FUNC_NAME(gl_create_shader_programv)(GLenum type, GLsizei count, varray *strings) {
-	return glCreateShaderProgramv(type, count, hl_aptr(strings, GLchar *));
+	const char** wokeStrings = (const char**)malloc(sizeof(char*) * strings->size);
+	vstring** wokerStrings = hl_aptr(strings, vstring*);
+	for (int i = 0; i < strings->size; ++i) {
+		vstring* srcString = wokerStrings[i];
+		wokeStrings[i] = hl_to_utf8(srcString->bytes);
+	}
+	GLuint code = glCreateShaderProgramv(type, count, wokeStrings);
+	free(wokeStrings);
+	return code;
 }
 
 HL_PRIM void FUNC_NAME(gl_cull_face)(GLenum mode) {
@@ -651,7 +662,8 @@ HL_PRIM void FUNC_NAME(gl_debug_message_control)(GLenum source, GLenum type, GLe
 }
 
 HL_PRIM void FUNC_NAME(gl_debug_message_insert)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, vstring *buf) {
-	return glDebugMessageInsert(source, type, id, severity, length, buf->bytes);
+	const char* gay = hl_to_utf8(buf->bytes);
+	return glDebugMessageInsert(source, type, id, severity, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_delete_buffers)(GLsizei n, GLuint *buffers) {
@@ -903,15 +915,18 @@ HL_PRIM void FUNC_NAME(gl_get_active_atomic_counter_bufferiv)(GLuint program, GL
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_attrib)(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, vstring *name) {
-	return glGetActiveAttrib(program, index, bufSize, length, size, type, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetActiveAttrib(program, index, bufSize, length, size, type, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_subroutine_name)(GLuint program, GLenum shadertype, GLuint index, GLsizei bufSize, GLsizei *length, vstring *name) {
-	return glGetActiveSubroutineName(program, shadertype, index, bufSize, length, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetActiveSubroutineName(program, shadertype, index, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_subroutine_uniform_name)(GLuint program, GLenum shadertype, GLuint index, GLsizei bufSize, GLsizei *length, vstring *name) {
-	return glGetActiveSubroutineUniformName(program, shadertype, index, bufSize, length, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetActiveSubroutineUniformName(program, shadertype, index, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_subroutine_uniformiv)(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint *values) {
@@ -919,11 +934,13 @@ HL_PRIM void FUNC_NAME(gl_get_active_subroutine_uniformiv)(GLuint program, GLenu
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_uniform)(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, vstring *name) {
-	return glGetActiveUniform(program, index, bufSize, length, size, type, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetActiveUniform(program, index, bufSize, length, size, type, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_uniform_block_name)(GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length, vstring *uniformBlockName) {
-	return glGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, uniformBlockName->bytes);
+	const char* gay = hl_to_utf8(uniformBlockName->bytes);
+	return glGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_uniform_blockiv)(GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint *params) {
@@ -931,7 +948,8 @@ HL_PRIM void FUNC_NAME(gl_get_active_uniform_blockiv)(GLuint program, GLuint uni
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_uniform_name)(GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei *length, vstring *uniformName) {
-	return glGetActiveUniformName(program, uniformIndex, bufSize, length, uniformName->bytes);
+	const char* gay = hl_to_utf8(uniformName->bytes);
+	return glGetActiveUniformName(program, uniformIndex, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_active_uniformsiv)(GLuint program, GLsizei uniformCount, GLuint *uniformIndices, GLenum pname, GLint *params) {
@@ -943,7 +961,8 @@ HL_PRIM void FUNC_NAME(gl_get_attached_shaders)(GLuint program, GLsizei maxCount
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_attrib_location)(GLuint program, vstring *name) {
-	return glGetAttribLocation(program, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetAttribLocation(program, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_booleani_v)(GLenum target, GLuint index, GLboolean *data) {
@@ -963,7 +982,7 @@ HL_PRIM void FUNC_NAME(gl_get_buffer_parameteriv)(GLenum target, GLenum pname, G
 }
 
 HL_PRIM void FUNC_NAME(gl_get_buffer_pointerv)(GLenum target, GLenum pname, vbyte **params) {
-	return glGetBufferPointerv(target, pname, params);
+	return glGetBufferPointerv(target, pname, (void**)params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_buffer_sub_data)(GLenum target, GLintptr offset, GLsizeiptr size, vbyte *data) {
@@ -975,7 +994,8 @@ HL_PRIM void FUNC_NAME(gl_get_compressed_tex_image)(GLenum target, GLint level, 
 }
 
 HL_PRIM GLuint FUNC_NAME(gl_get_debug_message_log)(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, vstring *messageLog) {
-	return glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog->bytes);
+	const char* gay = hl_to_utf8(messageLog->bytes);
+	return glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_doublei_v)(GLenum target, GLuint index, GLdouble *data) {
@@ -999,11 +1019,13 @@ HL_PRIM void FUNC_NAME(gl_get_floatv)(GLenum pname, GLfloat *data) {
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_frag_data_index)(GLuint program, vstring *name) {
-	return glGetFragDataIndex(program, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetFragDataIndex(program, gay);
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_frag_data_location)(GLuint program, vstring *name) {
-	return glGetFragDataLocation(program, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetFragDataLocation(program, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_framebuffer_attachment_parameteriv)(GLenum target, GLenum attachment, GLenum pname, GLint *params) {
@@ -1043,15 +1065,17 @@ HL_PRIM void FUNC_NAME(gl_get_multisamplefv)(GLenum pname, GLuint index, GLfloat
 }
 
 HL_PRIM void FUNC_NAME(gl_get_object_label)(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei *length, vstring *label) {
-	return glGetObjectLabel(identifier, name, bufSize, length, label->bytes);
+	const char* gay = hl_to_utf8(label->bytes);
+	return glGetObjectLabel(identifier, name, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_object_ptr_label)(vbyte *ptr, GLsizei bufSize, GLsizei *length, vstring *label) {
-	return glGetObjectPtrLabel(ptr, bufSize, length, label->bytes);
+	const char* gay = hl_to_utf8(label->bytes);
+	return glGetObjectPtrLabel(ptr, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_pointerv)(GLenum pname, vbyte **params) {
-	return glGetPointerv(pname, params);
+	return glGetPointerv(pname, (void**)params);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_binary)(GLuint program, GLsizei bufSize, GLsizei *length, GLenum *binaryFormat, vbyte *binary) {
@@ -1059,7 +1083,8 @@ HL_PRIM void FUNC_NAME(gl_get_program_binary)(GLuint program, GLsizei bufSize, G
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_info_log)(GLuint program, GLsizei bufSize, GLsizei *length, vstring *infoLog) {
-	return glGetProgramInfoLog(program, bufSize, length, infoLog->bytes);
+	const char* gay = hl_to_utf8(infoLog->bytes);
+	return glGetProgramInfoLog(program, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_interfaceiv)(GLuint program, GLenum programInterface, GLenum pname, GLint *params) {
@@ -1067,7 +1092,8 @@ HL_PRIM void FUNC_NAME(gl_get_program_interfaceiv)(GLuint program, GLenum progra
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_pipeline_info_log)(GLuint pipeline, GLsizei bufSize, GLsizei *length, vstring *infoLog) {
-	return glGetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog->bytes);
+	const char* gay = hl_to_utf8(infoLog->bytes);
+	return glGetProgramPipelineInfoLog(pipeline, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_pipelineiv)(GLuint pipeline, GLenum pname, GLint *params) {
@@ -1075,19 +1101,23 @@ HL_PRIM void FUNC_NAME(gl_get_program_pipelineiv)(GLuint pipeline, GLenum pname,
 }
 
 HL_PRIM GLuint FUNC_NAME(gl_get_program_resource_index)(GLuint program, GLenum programInterface, vstring *name) {
-	return glGetProgramResourceIndex(program, programInterface, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetProgramResourceIndex(program, programInterface, gay);
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_program_resource_location)(GLuint program, GLenum programInterface, vstring *name) {
-	return glGetProgramResourceLocation(program, programInterface, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetProgramResourceLocation(program, programInterface, gay);
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_program_resource_location_index)(GLuint program, GLenum programInterface, vstring *name) {
-	return glGetProgramResourceLocationIndex(program, programInterface, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetProgramResourceLocationIndex(program, programInterface, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_resource_name)(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize, GLsizei *length, vstring *name) {
-	return glGetProgramResourceName(program, programInterface, index, bufSize, length, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetProgramResourceName(program, programInterface, index, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_program_resourceiv)(GLuint program, GLenum programInterface, GLuint index, GLsizei propCount, GLenum *props, GLsizei count, GLsizei *length, GLint *params) {
@@ -1147,7 +1177,8 @@ HL_PRIM void FUNC_NAME(gl_get_sampler_parameteriv)(GLuint sampler, GLenum pname,
 }
 
 HL_PRIM void FUNC_NAME(gl_get_shader_info_log)(GLuint shader, GLsizei bufSize, GLsizei *length, vstring *infoLog) {
-	return glGetShaderInfoLog(shader, bufSize, length, infoLog->bytes);
+	const char* gay = hl_to_utf8(infoLog->bytes);
+	return glGetShaderInfoLog(shader, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_shader_precision_format)(GLenum shadertype, GLenum precisiontype, GLint *range, GLint *precision) {
@@ -1155,7 +1186,8 @@ HL_PRIM void FUNC_NAME(gl_get_shader_precision_format)(GLenum shadertype, GLenum
 }
 
 HL_PRIM void FUNC_NAME(gl_get_shader_source)(GLuint shader, GLsizei bufSize, GLsizei *length, vstring *source) {
-	return glGetShaderSource(shader, bufSize, length, source->bytes);
+	const char* gay = hl_to_utf8(source->bytes);
+	return glGetShaderSource(shader, bufSize, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_shaderiv)(GLuint shader, GLenum pname, GLint *params) {
@@ -1171,11 +1203,13 @@ HL_PRIM GLubyte *FUNC_NAME(gl_get_stringi)(GLenum name, GLuint index) {
 }
 
 HL_PRIM GLuint FUNC_NAME(gl_get_subroutine_index)(GLuint program, GLenum shadertype, vstring *name) {
-	return glGetSubroutineIndex(program, shadertype, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetSubroutineIndex(program, shadertype, gay);
 }
 
 HL_PRIM GLint FUNC_NAME(gl_get_subroutine_uniform_location)(GLuint program, GLenum shadertype, vstring *name) {
-	return glGetSubroutineUniformLocation(program, shadertype, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetSubroutineUniformLocation(program, shadertype, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_synciv)(GLsync sync, GLenum pname, GLsizei count, GLsizei *length, GLint *values) {
@@ -1211,15 +1245,25 @@ HL_PRIM void FUNC_NAME(gl_get_tex_parameteriv)(GLenum target, GLenum pname, GLin
 }
 
 HL_PRIM void FUNC_NAME(gl_get_transform_feedback_varying)(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLsizei *size, GLenum *type, vstring *name) {
-	return glGetTransformFeedbackVarying(program, index, bufSize, length, size, type, name->bytes);
+	const char* gay = hl_to_utf8(name->bytes);
+	return glGetTransformFeedbackVarying(program, index, bufSize, length, size, type, gay);
 }
 
 HL_PRIM GLuint FUNC_NAME(gl_get_uniform_block_index)(GLuint program, vstring *uniformBlockName) {
-	return glGetUniformBlockIndex(program, uniformBlockName->bytes);
+	const char* gay = hl_to_utf8(uniformBlockName->bytes);
+	return glGetUniformBlockIndex(program, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniform_indices)(GLuint program, GLsizei uniformCount, varray *uniformNames, GLuint *uniformIndices) {
-	return glGetUniformIndices(program, uniformCount, hl_aptr(uniformNames, GLchar *), uniformIndices);
+	const char** wokeStrings = (const char**)malloc(sizeof(char*) * uniformNames->size);
+	vstring** wokerStrings = hl_aptr(uniformNames, vstring*);
+	for (int i = 0; i < uniformNames->size; ++i) {
+		vstring* srcString = wokerStrings[i];
+		wokeStrings[i] = hl_to_utf8(srcString->bytes);
+	}
+	glGetUniformIndices(program, uniformCount, wokeStrings, uniformIndices);
+	free(wokeStrings);
+	return;
 }
 
 HL_PRIM void FUNC_NAME(gl_get_uniform_subroutineuiv)(GLenum shadertype, GLint location, GLuint *params) {
@@ -1255,7 +1299,7 @@ HL_PRIM void FUNC_NAME(gl_get_vertex_attrib_ldv)(GLuint index, GLenum pname, GLd
 }
 
 HL_PRIM void FUNC_NAME(gl_get_vertex_attrib_pointerv)(GLuint index, GLenum pname, vbyte **pointer) {
-	return glGetVertexAttribPointerv(index, pname, pointer);
+	return glGetVertexAttribPointerv(index, pname, (void**)pointer);
 }
 
 HL_PRIM void FUNC_NAME(gl_get_vertex_attribdv)(GLuint index, GLenum pname, GLdouble *params) {
@@ -1391,11 +1435,11 @@ HL_PRIM void FUNC_NAME(gl_multi_draw_arrays_indirect)(GLenum mode, vbyte *indire
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_draw_elements)(GLenum mode, GLsizei *count, GLenum type, vbyte **indices, GLsizei drawcount) {
-	return glMultiDrawElements(mode, count, type, indices, drawcount);
+	return glMultiDrawElements(mode, count, type, (const void**)indices, drawcount);
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_draw_elements_base_vertex)(GLenum mode, GLsizei *count, GLenum type, vbyte **indices, GLsizei drawcount, GLint *basevertex) {
-	return glMultiDrawElementsBaseVertex(mode, count, type, indices, drawcount, basevertex);
+	return glMultiDrawElementsBaseVertex(mode, count, type, (const void**)indices, drawcount, basevertex);
 }
 
 HL_PRIM void FUNC_NAME(gl_multi_draw_elements_indirect)(GLenum mode, GLenum type, vbyte *indirect, GLsizei drawcount, GLsizei stride) {
@@ -1443,11 +1487,13 @@ HL_PRIM void FUNC_NAME(gl_normal_p3uiv)(GLenum type, GLuint *coords) {
 }
 
 HL_PRIM void FUNC_NAME(gl_object_label)(GLenum identifier, GLuint name, GLsizei length, vstring *label) {
-	return glObjectLabel(identifier, name, length, label->bytes);
+	const char* gay = hl_to_utf8(label->bytes);
+	return glObjectLabel(identifier, name, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_object_ptr_label)(vbyte *ptr, GLsizei length, vstring *label) {
-	return glObjectPtrLabel(ptr, length, label->bytes);
+	const char* gay = hl_to_utf8(label->bytes);
+	return glObjectPtrLabel(ptr, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_patch_parameterfv)(GLenum pname, GLfloat *values) {
@@ -1719,7 +1765,8 @@ HL_PRIM void FUNC_NAME(gl_provoking_vertex)(GLenum mode) {
 }
 
 HL_PRIM void FUNC_NAME(gl_push_debug_group)(GLenum source, GLuint id, GLsizei length, vstring *message) {
-	return glPushDebugGroup(source, id, length, message->bytes);
+	const char* gay = hl_to_utf8(message->bytes);
+	return glPushDebugGroup(source, id, length, gay);
 }
 
 HL_PRIM void FUNC_NAME(gl_query_counter)(GLuint id, GLenum target) {
@@ -1959,7 +2006,15 @@ HL_PRIM void FUNC_NAME(gl_texture_view)(GLuint texture, GLenum target, GLuint or
 }
 
 HL_PRIM void FUNC_NAME(gl_transform_feedback_varyings)(GLuint program, GLsizei count, varray *varyings, GLenum bufferMode) {
-	return glTransformFeedbackVaryings(program, count, hl_aptr(varyings, GLchar *), bufferMode);
+	const char** wokeStrings = (const char**)malloc(sizeof(char*) * varyings->size);
+	vstring** wokerStrings = hl_aptr(varyings, vstring*);
+	for (int i = 0; i < varyings->size; ++i) {
+		vstring* srcString = wokerStrings[i];
+		wokeStrings[i] = hl_to_utf8(srcString->bytes);
+	}
+	glTransformFeedbackVaryings(program, count, wokeStrings, bufferMode);
+	free(wokeStrings);
+	return;
 }
 
 HL_PRIM GLboolean FUNC_NAME(gl_unmap_buffer)(GLenum target) {

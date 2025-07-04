@@ -1,8 +1,8 @@
 #include "global.h"
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/efx.h>
+#include <al.h>
+#include <alc.h>
+#include <efx.h>
 
 #define FUNC_NAME(n) HL_NAME(openal_##n)
 
